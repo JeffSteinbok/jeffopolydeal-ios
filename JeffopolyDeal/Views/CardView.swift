@@ -111,6 +111,25 @@ struct CardComponentView: View {
     }
 }
 
+/// CardComponentView is always laid out at full size (150x210); this wraps it
+/// with a uniform scale for compact contexts (opponent boards, property
+/// stacks) instead of reimplementing the CSS's separate sm/xs breakpoints.
+struct ScaledCardView: View {
+    let card: GameCard
+    var scale: CGFloat = 1.0
+    var currentRent: Int? = nil
+    var selected: Bool = false
+    var dimmed: Bool = false
+
+    static let compactScale: CGFloat = 88.0 / 150.0
+
+    var body: some View {
+        CardComponentView(card: card, selected: selected, dimmed: dimmed, currentRent: currentRent)
+            .scaleEffect(scale)
+            .frame(width: CardComponentView.width * scale, height: CardComponentView.height * scale)
+    }
+}
+
 // MARK: - Badge
 
 struct BadgeView: View {

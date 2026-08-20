@@ -83,12 +83,13 @@ struct GameView: View {
                 Button("Leave Game", role: .destructive, action: onLeave)
                 Button("Cancel", role: .cancel) {}
             }
-        case .draw, .play, .awaitingResponse, .discard, .gameOver:
-            // TODO(Phase 2+): board, hand, action/discard sheets, game-over screen.
+        case .draw, .play, .awaitingResponse, .discard:
+            BoardView(state: state, myPlayerId: playerId, hub: hub, onLeave: onLeave)
+        case .gameOver:
+            // TODO(Phase 5): fanned winner sets, Play Again.
             VStack(spacing: 12) {
-                Text("Phase: \(state.phase.rawValue)")
-                Text("Board UI coming in a later phase.")
-                    .foregroundStyle(.secondary)
+                Text(state.winnerName.map { "\($0) wins!" } ?? "Game Over")
+                    .font(.title2.bold())
                 Button("Leave", action: onLeave)
             }
         }

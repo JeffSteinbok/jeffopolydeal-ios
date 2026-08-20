@@ -12,6 +12,7 @@
 		0E7B78D661D0B28668F7185D /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF9BB387E5C0B9E4434D2EC4 /* ContentView.swift */; };
 		1A9059E5C4D458379CA13B37 /* GameHubClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = C25629EED88C66ACE974AED9 /* GameHubClient.swift */; };
 		213A1FEF91F8424828C24A77 /* CardModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C5120FDCFF45F68897CD3A9 /* CardModel.swift */; };
+		2F276D0550F519DF5AC2B1B4 /* HandView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B50A0B1C024AA3D9B1464EDB /* HandView.swift */; };
 		33922081F3368F245F6A562A /* Inter-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = DA2423DBCFDE6CC8D0D09037 /* Inter-Bold.ttf */; };
 		34CF23A233525DA60DCB56A9 /* RentIcon.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16DA80D1706718BC435F0F6F /* RentIcon.swift */; };
 		4201319FEAAD397159C5365B /* GameConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C74A6B3971B4529E0F796E9 /* GameConfig.swift */; };
@@ -25,9 +26,11 @@
 		B7B74DF24F1F901EE58F8DB7 /* InterFont.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06E1E09CAFA984026AB73880 /* InterFont.swift */; };
 		B9BDD767C00AD5C274D670E1 /* SignalRClient in Frameworks */ = {isa = PBXBuildFile; productRef = 09DD40C8A9BF8574E7BDBFE5 /* SignalRClient */; };
 		C60BC7931C47EA7A424F0594 /* Inter-ExtraBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 39492BE415F85B2CD1CF32D1 /* Inter-ExtraBold.ttf */; };
+		C60D8432648BB2E735F02A8B /* BoardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D51FBB97CD7A601D58ACDE7 /* BoardView.swift */; };
 		D600FB609644A76E11EA1E07 /* JeffopolyDealApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA4684735EFC1B6BD1745648 /* JeffopolyDealApp.swift */; };
 		D755C20B9E1BADB0283D2AA6 /* SVGPath.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F7FFC1123CD4F8F19535B26 /* SVGPath.swift */; };
 		E085845C524941A3A67A823F /* Inter-Black.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 3A0AAB6C882AC7DF6F93E3FD /* Inter-Black.ttf */; };
+		E5066A090C73C4D9306CA458 /* PlayerBoardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22E249D8BA84141111353903 /* PlayerBoardView.swift */; };
 		FD0904A15DA222B534E32383 /* SessionStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFC018F1B55911027CE6C76E /* SessionStore.swift */; };
 /* End PBXBuildFile section */
 
@@ -37,15 +40,18 @@
 		0C5120FDCFF45F68897CD3A9 /* CardModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardModel.swift; sourceTree = "<group>"; };
 		0C74A6B3971B4529E0F796E9 /* GameConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameConfig.swift; sourceTree = "<group>"; };
 		16DA80D1706718BC435F0F6F /* RentIcon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RentIcon.swift; sourceTree = "<group>"; };
+		22E249D8BA84141111353903 /* PlayerBoardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerBoardView.swift; sourceTree = "<group>"; };
 		26D2CF3DAA2D1364BE0DBDB3 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		317A4E502E7908E7ADF95B24 /* PropertyColors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PropertyColors.swift; sourceTree = "<group>"; };
 		39492BE415F85B2CD1CF32D1 /* Inter-ExtraBold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Inter-ExtraBold.ttf"; sourceTree = "<group>"; };
 		3A0AAB6C882AC7DF6F93E3FD /* Inter-Black.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Inter-Black.ttf"; sourceTree = "<group>"; };
+		4D51FBB97CD7A601D58ACDE7 /* BoardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoardView.swift; sourceTree = "<group>"; };
 		5029BAB55EBB1FC7299CE469 /* GameView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameView.swift; sourceTree = "<group>"; };
 		5C2D85050D7E5B540ED916C8 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		9F7FFC1123CD4F8F19535B26 /* SVGPath.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SVGPath.swift; sourceTree = "<group>"; };
 		A055F2A2DE8181C26D32201B /* JeffopolyDeal.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = JeffopolyDeal.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A35084CBE59DCCC7F56D84A4 /* Inter-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Inter-Regular.ttf"; sourceTree = "<group>"; };
+		B50A0B1C024AA3D9B1464EDB /* HandView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HandView.swift; sourceTree = "<group>"; };
 		BA4684735EFC1B6BD1745648 /* JeffopolyDealApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JeffopolyDealApp.swift; sourceTree = "<group>"; };
 		BFC018F1B55911027CE6C76E /* SessionStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionStore.swift; sourceTree = "<group>"; };
 		C25629EED88C66ACE974AED9 /* GameHubClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameHubClient.swift; sourceTree = "<group>"; };
@@ -133,10 +139,13 @@
 			children = (
 				ED553198986784A92FFC8689 /* AppRootView.swift */,
 				5C2D85050D7E5B540ED916C8 /* Assets.xcassets */,
+				4D51FBB97CD7A601D58ACDE7 /* BoardView.swift */,
 				EF9BB387E5C0B9E4434D2EC4 /* ContentView.swift */,
 				5029BAB55EBB1FC7299CE469 /* GameView.swift */,
+				B50A0B1C024AA3D9B1464EDB /* HandView.swift */,
 				26D2CF3DAA2D1364BE0DBDB3 /* Info.plist */,
 				BA4684735EFC1B6BD1745648 /* JeffopolyDealApp.swift */,
+				22E249D8BA84141111353903 /* PlayerBoardView.swift */,
 				CD41328686EF5161A9096B83 /* StartView.swift */,
 				27C7AE56D0FC66DB47EE393C /* Fonts */,
 				3F4A76785CCAD14B39072C4C /* Models */,
@@ -224,6 +233,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				B6B49E6B24D5813469D64E0E /* AppRootView.swift in Sources */,
+				C60D8432648BB2E735F02A8B /* BoardView.swift in Sources */,
 				213A1FEF91F8424828C24A77 /* CardModel.swift in Sources */,
 				022B5AEBAF4DC49D185D8C61 /* CardView.swift in Sources */,
 				0E7B78D661D0B28668F7185D /* ContentView.swift in Sources */,
@@ -231,8 +241,10 @@
 				1A9059E5C4D458379CA13B37 /* GameHubClient.swift in Sources */,
 				5951D93E7B76A5A7A4C4EC17 /* GameState.swift in Sources */,
 				07206F0992D3F8ED0019BCEF /* GameView.swift in Sources */,
+				2F276D0550F519DF5AC2B1B4 /* HandView.swift in Sources */,
 				B7B74DF24F1F901EE58F8DB7 /* InterFont.swift in Sources */,
 				D600FB609644A76E11EA1E07 /* JeffopolyDealApp.swift in Sources */,
+				E5066A090C73C4D9306CA458 /* PlayerBoardView.swift in Sources */,
 				9BFE3030449A51487BD124B0 /* PropertyColors.swift in Sources */,
 				34CF23A233525DA60DCB56A9 /* RentIcon.swift in Sources */,
 				D755C20B9E1BADB0283D2AA6 /* SVGPath.swift in Sources */,
