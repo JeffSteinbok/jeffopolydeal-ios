@@ -20,6 +20,7 @@
 		386D2F99B9A6C0359D7C5CB3 /* ActionResponseSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BE72948B1144334117E19FD /* ActionResponseSheet.swift */; };
 		4201319FEAAD397159C5365B /* GameConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C74A6B3971B4529E0F796E9 /* GameConfig.swift */; };
 		5951D93E7B76A5A7A4C4EC17 /* GameState.swift in Sources */ = {isa = PBXBuildFile; fileRef = E59ECC8F639E18D1E871726E /* GameState.swift */; };
+		676773334BA74B8ED1141E44 /* ToastCenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98B79D9974C5D91A7E0A61CB /* ToastCenter.swift */; };
 		90E773F3D38AD79372814963 /* Inter-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A35084CBE59DCCC7F56D84A4 /* Inter-Regular.ttf */; };
 		9A906C00C2596B5BE7E3D2A7 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5C2D85050D7E5B540ED916C8 /* Assets.xcassets */; };
 		9B8F697A4007D68E66FEFCF3 /* Inter-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 0468683AFDFCA1B3B78B4112 /* Inter-SemiBold.ttf */; };
@@ -52,6 +53,7 @@
 		4D51FBB97CD7A601D58ACDE7 /* BoardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoardView.swift; sourceTree = "<group>"; };
 		5029BAB55EBB1FC7299CE469 /* GameView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameView.swift; sourceTree = "<group>"; };
 		5C2D85050D7E5B540ED916C8 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		98B79D9974C5D91A7E0A61CB /* ToastCenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToastCenter.swift; sourceTree = "<group>"; };
 		9F7FFC1123CD4F8F19535B26 /* SVGPath.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SVGPath.swift; sourceTree = "<group>"; };
 		A055F2A2DE8181C26D32201B /* JeffopolyDeal.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = JeffopolyDeal.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A35084CBE59DCCC7F56D84A4 /* Inter-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Inter-Regular.ttf"; sourceTree = "<group>"; };
@@ -156,6 +158,7 @@
 				D6DE677FC84B700A30B0D354 /* PlayCardSheet.swift */,
 				22E249D8BA84141111353903 /* PlayerBoardView.swift */,
 				CD41328686EF5161A9096B83 /* StartView.swift */,
+				98B79D9974C5D91A7E0A61CB /* ToastCenter.swift */,
 				27C7AE56D0FC66DB47EE393C /* Fonts */,
 				3F4A76785CCAD14B39072C4C /* Models */,
 				4C7D96EAF963EDF0B205884C /* Networking */,
@@ -262,6 +265,7 @@
 				D755C20B9E1BADB0283D2AA6 /* SVGPath.swift in Sources */,
 				FD0904A15DA222B534E32383 /* SessionStore.swift in Sources */,
 				B5EF7761C4F21EC9776CFA8D /* StartView.swift in Sources */,
+				676773334BA74B8ED1141E44 /* ToastCenter.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

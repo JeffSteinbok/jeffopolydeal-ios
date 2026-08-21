@@ -16,9 +16,12 @@ struct BoardView: View {
     private var isMyTurn: Bool { currentPlayer?.playerId == myPlayerId }
     private var opponents: [PlayerState] { state.players.filter { $0.playerId != myPlayerId } }
 
-    private var showDiscard: Bool { state.phase == .discard && isMyTurn }
+    @StateObject private var toastCenter = ToastCenter()
+    @State private var inspectedPlayer: PlayerState?
+
+    private var showDiscard: Bool { state.phase == .discard && isMyTurn && !toastCenter.busy }
     private var showActionResponse: Bool {
-        guard state.phase == .awaitingResponse, let pending = state.pendingAction, let myConnectionId = me?.connectionId else { return false }
+        guard state.phase == .awaitingResponse, let pending = state.pendingAction, let myConnectionId = me?.connectionId, !toastCenter.busy else { return false }
         return pending.targetPlayerIds.contains(myConnectionId)
     }
 
@@ -28,6 +31,7 @@ struct BoardView: View {
                 VStack(spacing: 12) {
                     ForEach(opponents) { p in
                         PlayerBoardView(player: p, isMe: false, isCurrentTurn: currentPlayer?.playerId == p.playerId, compact: true)
+                            .onTapGesture { inspectedPlayer = p }
                     }
                     if let me {
                         PlayerBoardView(
@@ -64,10 +68,22 @@ struct BoardView: View {
             }
         }
         .overlay {
-            if isMyTurn && state.phase == .draw {
+            if isMyTurn && state.phase == .draw && !toastCenter.busy {
                 DrawPopup { Task { try? await hub.drawCards() } }
             }
         }
+        .safeAreaInset(edge: .top) {
+            if let toast = toastCenter.current {
+                FyiToastView(action: toast, myName: me?.name, onDismiss: { toastCenter.dismissCurrent() })
+                    .padding(.top, 4)
+                    .transition(.move(edge: .top).combined(with: .opacity))
+            }
+        }
+        .animation(.spring(duration: 0.3), value: toastCenter.current)
+        .onChange(of: state.recentActions) { _, newActions in
+            toastCenter.ingest(recentActions: newActions, myName: me?.name)
+        }
+        .sheet(item: $inspectedPlayer) { p in PlayerInspectSheet(player: p) }
         .toolbar {
             ToolbarItem(placement: .topBarTrailing) {
                 Button("Leave", role: .destructive, action: onLeave)

@@ -86,12 +86,7 @@ struct GameView: View {
         case .draw, .play, .awaitingResponse, .discard:
             BoardView(state: state, myPlayerId: playerId, hub: hub, onLeave: onLeave)
         case .gameOver:
-            // TODO(Phase 5): fanned winner sets, Play Again.
-            VStack(spacing: 12) {
-                Text(state.winnerName.map { "\($0) wins!" } ?? "Game Over")
-                    .font(.title2.bold())
-                Button("Leave", action: onLeave)
-            }
+            GameOverView(state: state, onPlayAgain: onLeave)
         }
     }
 }
@@ -176,5 +171,51 @@ private struct LobbyView: View {
     private var shareURL: URL {
         // Mirrors the web's `${origin}?join=${gameCode}` deep link.
         URL(string: "https://jeffopolydeal.azurewebsites.net?join=\(state.gameCode)")!
+    }
+}
+
+/// Mirrors GamePage.tsx:335-397 (the GameOver render): winner name, their
+/// completed property sets fanned out, Play Again.
+private struct GameOverView: View {
+    let state: GameState
+    let onPlayAgain: () -> Void
+
+    private var winner: PlayerState? { state.players.first { $0.playerId == state.winnerId } }
+    private var completeSets: [PropertySetState] { winner?.propertySets.filter(\.isComplete) ?? [] }
+
+    var body: some View {
+        ScrollView {
+            VStack(spacing: 20) {
+                Image("TitleImage")
+                    .resizable()
+                    .scaledToFit()
+                    .frame(maxWidth: 240)
+
+                Text("🎉 \(state.winnerName ?? "Someone") Wins! 🎉")
+                    .font(.title2.bold())
+
+                if !completeSets.isEmpty {
+                    ScrollView(.horizontal, showsIndicators: false) {
+                        HStack(alignment: .top, spacing: 16) {
+                            ForEach(completeSets) { set in
+                                ZStack(alignment: .top) {
+                                    ForEach(Array(set.cards.enumerated()), id: \.element.id) { idx, card in
+                                        ScaledCardView(card: card, scale: ScaledCardView.compactScale)
+                                            .offset(y: CGFloat(idx) * 58)
+                                    }
+                                }
+                                .frame(width: 88, height: 58 * CGFloat(max(set.cards.count - 1, 0)) + 123, alignment: .top)
+                            }
+                        }
+                        .padding(.horizontal)
+                    }
+                }
+
+                Button("Play Again", action: onPlayAgain)
+                    .buttonStyle(.borderedProminent)
+                    .controlSize(.large)
+            }
+            .padding()
+        }
     }
 }
