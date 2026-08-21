@@ -18,7 +18,18 @@ targets:
     info:
       path: JeffopolyDeal/Info.plist
       properties:
+        CFBundleDisplayName: Jeffopoly Deal
         UILaunchScreen: {}
+        UISupportedInterfaceOrientations:
+          - UIInterfaceOrientationPortrait
+          - UIInterfaceOrientationPortraitUpsideDown
+          - UIInterfaceOrientationLandscapeLeft
+          - UIInterfaceOrientationLandscapeRight
+        UISupportedInterfaceOrientations~ipad:
+          - UIInterfaceOrientationPortrait
+          - UIInterfaceOrientationPortraitUpsideDown
+          - UIInterfaceOrientationLandscapeLeft
+          - UIInterfaceOrientationLandscapeRight
         UIAppFonts:
           - Inter-Regular.ttf
           - Inter-SemiBold.ttf
@@ -30,6 +41,10 @@ targets:
             localhost:
               NSExceptionAllowsInsecureHTTPLoads: true
         ITSAppUsesNonExemptEncryption: false
+        NSLocalNetworkUsageDescription: Jeffopoly Deal uses your local network to find nearby games hosted by friends.
+        NSBonjourServices:
+          - _jeffopolydl._tcp
+          - _jeffopolydl._udp
     settings:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: net.steinbok.jeffopolydeal

@@ -104,6 +104,9 @@ private struct LobbyView: View {
     private var canStart: Bool { isCreator || (state.players.first.map { !$0.isConnected } ?? false) }
     private let minPlayers = 2
 
+    @StateObject private var nearby = NearbyGamesService()
+    private var myName: String { state.players.first { $0.playerId == myPlayerId }?.name ?? "" }
+
     var body: some View {
         VStack(spacing: 20) {
             Image("TitleImage")
@@ -166,6 +169,9 @@ private struct LobbyView: View {
                 .buttonStyle(.bordered)
         }
         .padding()
+        .appBackground()
+        .onAppear { nearby.startAdvertising(gameCode: state.gameCode, hostName: myName) }
+        .onDisappear { nearby.stopAdvertising() }
     }
 
     private var shareURL: URL {

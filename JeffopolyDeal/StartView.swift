@@ -4,13 +4,14 @@ import SwiftUI
 struct StartView: View {
     let onJoinGame: (_ gameCode: String, _ playerName: String) -> Void
 
-    private enum Mode { case menu, create, join }
+    private enum Mode: Equatable { case menu, create, join }
 
     @State private var mode: Mode = .menu
     @State private var playerName: String = ""
     @State private var gameCode: String = ""
     @State private var showAbout: Bool = false
     @FocusState private var fieldFocused: Bool
+    @StateObject private var nearby = NearbyGamesService()
 
     var body: some View {
         VStack(spacing: 0) {
@@ -44,7 +45,20 @@ struct StartView: View {
             .foregroundStyle(.secondary)
             .padding(.bottom, 16)
         }
+        .appBackground()
         .sheet(isPresented: $showAbout) { AboutSheet() }
+        .onAppear {
+            if playerName.isEmpty, let name = DeviceName.guessMyName() {
+                playerName = name
+            }
+        }
+        .onChange(of: mode) { _, newMode in
+            if newMode == .join {
+                nearby.startBrowsing()
+            } else {
+                nearby.stopBrowsing()
+            }
+        }
     }
 
     private var currentYear: String {
@@ -101,6 +115,25 @@ struct StartView: View {
             Button("Join Game", action: handleJoin)
                 .buttonStyle(.borderedProminent)
                 .disabled(playerName.trimmed.isEmpty || gameCode.trimmed.isEmpty)
+
+            if !nearby.nearbyGames.isEmpty {
+                VStack(alignment: .leading, spacing: 6) {
+                    Text("Nearby Games").font(.caption).foregroundStyle(.secondary)
+                    ForEach(nearby.nearbyGames) { game in
+                        Button {
+                            gameCode = game.gameCode
+                        } label: {
+                            HStack {
+                                Text(game.hostName)
+                                Spacer()
+                                Text(game.gameCode).font(.system(.body, design: .monospaced).bold())
+                            }
+                        }
+                        .buttonStyle(.bordered)
+                    }
+                }
+                .padding(.top, 4)
+            }
 
             Button("Back") { mode = .menu }
                 .buttonStyle(.bordered)
