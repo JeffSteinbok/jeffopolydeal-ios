@@ -5,6 +5,8 @@ struct HandView: View {
     let cards: [GameCard]
     let canPlay: Bool
     let phase: GamePhase
+    let gameState: GameState
+    let myState: PlayerState
     let playsRemaining: Int
     let isMyTurn: Bool
     let onEndTurn: () -> Void
@@ -47,8 +49,10 @@ struct HandView: View {
             }
         }
         .sheet(item: $selectedCard) { card in
-            PlayCardSheet(card: card, canPlay: canPlay, phase: phase) { cardId, request in
+            PlayCardSheet(card: card, gameState: gameState, myState: myState, canPlay: canPlay) { cardId, request in
                 onPlayCard(cardId, request)
+                selectedCard = nil
+            } onCancel: {
                 selectedCard = nil
             }
         }
@@ -60,55 +64,5 @@ struct HandView: View {
             return
         }
         selectedCard = card
-    }
-}
-
-/// Mirrors src/web/pages/gamePage/components/PlayCardModal.tsx.
-/// Phase 2 scope: Money ("Bank") and Property ("Place") only — the full
-/// 9-step action/wildcard/rent state machine is Phase 3.
-struct PlayCardSheet: View {
-    let card: GameCard
-    let canPlay: Bool
-    let phase: GamePhase
-    let onPlay: (Int, PlayCardRequest) -> Void
-
-    @Environment(\.dismiss) private var dismiss
-
-    var body: some View {
-        NavigationStack {
-            VStack(spacing: 20) {
-                CardComponentView(card: card)
-                if canPlay, phase == .play {
-                    actions
-                } else {
-                    Text("Not playable right now").foregroundStyle(.secondary)
-                }
-            }
-            .padding()
-            .toolbar {
-                ToolbarItem(placement: .cancellationAction) { Button("Cancel") { dismiss() } }
-            }
-        }
-        .presentationDetents([.medium])
-    }
-
-    @ViewBuilder
-    private var actions: some View {
-        switch card.cardType {
-        case .money:
-            Button("◆ Bank") { onPlay(card.id, PlayCardRequest(playAsMoney: true)) }
-                .buttonStyle(.borderedProminent)
-        case .property:
-            Button("🏘️ Place") { onPlay(card.id, PlayCardRequest(playAsMoney: false)) }
-                .buttonStyle(.borderedProminent)
-        default:
-            VStack(spacing: 8) {
-                Text("This card type isn't playable yet.").foregroundStyle(.secondary)
-                if card.moneyValue > 0 {
-                    Button("◆ Bank") { onPlay(card.id, PlayCardRequest(playAsMoney: true)) }
-                        .buttonStyle(.bordered)
-                }
-            }
-        }
     }
 }

@@ -43,6 +43,8 @@ struct BoardView: View {
                     cards: me.hand ?? [],
                     canPlay: isMyTurn && (state.phase == .play || state.phase == .discard),
                     phase: state.phase,
+                    gameState: state,
+                    myState: me,
                     playsRemaining: max(0, 3 - state.playsUsed),
                     isMyTurn: isMyTurn,
                     onEndTurn: { Task { try? await hub.endTurn() } },
