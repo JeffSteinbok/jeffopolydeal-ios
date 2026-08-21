@@ -34,6 +34,7 @@ targets:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: net.steinbok.jeffopolydeal
         CODE_SIGN_STYLE: Automatic
+        DEVELOPMENT_TEAM: Y7KVX7666P
         SWIFT_VERSION: "5.0"
         TARGETED_DEVICE_FAMILY: "1,2"
         GENERATE_INFOPLIST_FILE: YES

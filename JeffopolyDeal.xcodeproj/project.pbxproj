@@ -200,6 +200,7 @@
 				LastUpgradeCheck = 1430;
 				TargetAttributes = {
 					F0453A27849E62499BF3C861 = {
+						DevelopmentTeam = Y7KVX7666P;
 						ProvisioningStyle = Automatic;
 					};
 				};
@@ -345,6 +346,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = Y7KVX7666P;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = JeffopolyDeal/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -366,6 +368,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = Y7KVX7666P;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = JeffopolyDeal/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
