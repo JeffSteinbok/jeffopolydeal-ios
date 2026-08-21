@@ -10,12 +10,14 @@
 		022B5AEBAF4DC49D185D8C61 /* CardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E52ECA1421FC34A58F4E278F /* CardView.swift */; };
 		07206F0992D3F8ED0019BCEF /* GameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5029BAB55EBB1FC7299CE469 /* GameView.swift */; };
 		0E7B78D661D0B28668F7185D /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF9BB387E5C0B9E4434D2EC4 /* ContentView.swift */; };
+		17852A0300E34F4883A3D771 /* DiscardSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE5BB582113FDF185F085A70 /* DiscardSheet.swift */; };
 		1A9059E5C4D458379CA13B37 /* GameHubClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = C25629EED88C66ACE974AED9 /* GameHubClient.swift */; };
 		213A1FEF91F8424828C24A77 /* CardModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C5120FDCFF45F68897CD3A9 /* CardModel.swift */; };
 		234093BED799A18D790E5AFD /* PlayCardSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6DE677FC84B700A30B0D354 /* PlayCardSheet.swift */; };
 		2F276D0550F519DF5AC2B1B4 /* HandView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B50A0B1C024AA3D9B1464EDB /* HandView.swift */; };
 		33922081F3368F245F6A562A /* Inter-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = DA2423DBCFDE6CC8D0D09037 /* Inter-Bold.ttf */; };
 		34CF23A233525DA60DCB56A9 /* RentIcon.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16DA80D1706718BC435F0F6F /* RentIcon.swift */; };
+		386D2F99B9A6C0359D7C5CB3 /* ActionResponseSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BE72948B1144334117E19FD /* ActionResponseSheet.swift */; };
 		4201319FEAAD397159C5365B /* GameConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C74A6B3971B4529E0F796E9 /* GameConfig.swift */; };
 		5951D93E7B76A5A7A4C4EC17 /* GameState.swift in Sources */ = {isa = PBXBuildFile; fileRef = E59ECC8F639E18D1E871726E /* GameState.swift */; };
 		90E773F3D38AD79372814963 /* Inter-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A35084CBE59DCCC7F56D84A4 /* Inter-Regular.ttf */; };
@@ -38,6 +40,7 @@
 /* Begin PBXFileReference section */
 		0468683AFDFCA1B3B78B4112 /* Inter-SemiBold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Inter-SemiBold.ttf"; sourceTree = "<group>"; };
 		06E1E09CAFA984026AB73880 /* InterFont.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InterFont.swift; sourceTree = "<group>"; };
+		0BE72948B1144334117E19FD /* ActionResponseSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActionResponseSheet.swift; sourceTree = "<group>"; };
 		0C5120FDCFF45F68897CD3A9 /* CardModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardModel.swift; sourceTree = "<group>"; };
 		0C74A6B3971B4529E0F796E9 /* GameConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameConfig.swift; sourceTree = "<group>"; };
 		16DA80D1706718BC435F0F6F /* RentIcon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RentIcon.swift; sourceTree = "<group>"; };
@@ -59,6 +62,7 @@
 		CD41328686EF5161A9096B83 /* StartView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StartView.swift; sourceTree = "<group>"; };
 		D6DE677FC84B700A30B0D354 /* PlayCardSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayCardSheet.swift; sourceTree = "<group>"; };
 		DA2423DBCFDE6CC8D0D09037 /* Inter-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Inter-Bold.ttf"; sourceTree = "<group>"; };
+		DE5BB582113FDF185F085A70 /* DiscardSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiscardSheet.swift; sourceTree = "<group>"; };
 		E52ECA1421FC34A58F4E278F /* CardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardView.swift; sourceTree = "<group>"; };
 		E59ECC8F639E18D1E871726E /* GameState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameState.swift; sourceTree = "<group>"; };
 		ED553198986784A92FFC8689 /* AppRootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppRootView.swift; sourceTree = "<group>"; };
@@ -139,10 +143,12 @@
 		D3E2841A67EA38458965F2AB /* JeffopolyDeal */ = {
 			isa = PBXGroup;
 			children = (
+				0BE72948B1144334117E19FD /* ActionResponseSheet.swift */,
 				ED553198986784A92FFC8689 /* AppRootView.swift */,
 				5C2D85050D7E5B540ED916C8 /* Assets.xcassets */,
 				4D51FBB97CD7A601D58ACDE7 /* BoardView.swift */,
 				EF9BB387E5C0B9E4434D2EC4 /* ContentView.swift */,
+				DE5BB582113FDF185F085A70 /* DiscardSheet.swift */,
 				5029BAB55EBB1FC7299CE469 /* GameView.swift */,
 				B50A0B1C024AA3D9B1464EDB /* HandView.swift */,
 				26D2CF3DAA2D1364BE0DBDB3 /* Info.plist */,
@@ -235,11 +241,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				386D2F99B9A6C0359D7C5CB3 /* ActionResponseSheet.swift in Sources */,
 				B6B49E6B24D5813469D64E0E /* AppRootView.swift in Sources */,
 				C60D8432648BB2E735F02A8B /* BoardView.swift in Sources */,
 				213A1FEF91F8424828C24A77 /* CardModel.swift in Sources */,
 				022B5AEBAF4DC49D185D8C61 /* CardView.swift in Sources */,
 				0E7B78D661D0B28668F7185D /* ContentView.swift in Sources */,
+				17852A0300E34F4883A3D771 /* DiscardSheet.swift in Sources */,
 				4201319FEAAD397159C5365B /* GameConfig.swift in Sources */,
 				1A9059E5C4D458379CA13B37 /* GameHubClient.swift in Sources */,
 				5951D93E7B76A5A7A4C4EC17 /* GameState.swift in Sources */,

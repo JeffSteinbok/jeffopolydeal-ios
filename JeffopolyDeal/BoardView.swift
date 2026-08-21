@@ -1,9 +1,8 @@
 import SwiftUI
 
 /// Mirrors the active-game (Draw/Play/Discard/AwaitingResponse) layout in
-/// GamePage.tsx:400-644 — opponent boards, my board, my hand. AwaitingResponse
-/// (ActionModal) and Discard (DiscardModal) sheets land in Phase 4; for now
-/// their state is visible on the board but there's no dedicated sheet yet.
+/// GamePage.tsx:400-644 — opponent boards, my board, my hand, plus the
+/// ActionResponseSheet/DiscardSheet modals driven by server phase/pendingAction.
 struct BoardView: View {
     let state: GameState
     let myPlayerId: String
@@ -16,6 +15,12 @@ struct BoardView: View {
     }
     private var isMyTurn: Bool { currentPlayer?.playerId == myPlayerId }
     private var opponents: [PlayerState] { state.players.filter { $0.playerId != myPlayerId } }
+
+    private var showDiscard: Bool { state.phase == .discard && isMyTurn }
+    private var showActionResponse: Bool {
+        guard state.phase == .awaitingResponse, let pending = state.pendingAction, let myConnectionId = me?.connectionId else { return false }
+        return pending.targetPlayerIds.contains(myConnectionId)
+    }
 
     var body: some View {
         VStack(spacing: 0) {
@@ -30,7 +35,10 @@ struct BoardView: View {
                             isMe: true,
                             isCurrentTurn: isMyTurn,
                             compact: false,
-                            onFlipCard: { cardId in Task { try? await hub.flipWildcard(cardId: cardId) } }
+                            onFlipCard: { cardId in Task { try? await hub.flipWildcard(cardId: cardId) } },
+                            onMoveProperty: { cardId, targetSetId, targetColor in
+                                Task { try? await hub.moveProperty(cardId: cardId, targetSetId: targetSetId, targetColor: targetColor) }
+                            }
                         )
                     }
                 }
@@ -63,6 +71,27 @@ struct BoardView: View {
         .toolbar {
             ToolbarItem(placement: .topBarTrailing) {
                 Button("Leave", role: .destructive, action: onLeave)
+            }
+        }
+        .sheet(isPresented: .constant(showDiscard)) {
+            DiscardSheet(
+                hand: me?.hand ?? [],
+                maxHandSize: 7,
+                onDiscard: { ids in
+                    Task { for id in ids { try? await hub.discardCard(cardId: id) } }
+                },
+                onCancel: state.playsUsed < 3 ? { Task { try? await hub.cancelDiscard() } } : nil
+            )
+        }
+        .sheet(isPresented: .constant(showActionResponse)) {
+            if let pending = state.pendingAction, let me {
+                ActionResponseSheet(
+                    pendingAction: pending,
+                    myState: me,
+                    otherPlayers: opponents,
+                    paymentError: state.paymentError,
+                    onRespond: { response in Task { try? await hub.respondToAction(response) } }
+                )
             }
         }
     }
