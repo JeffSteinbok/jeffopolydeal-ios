@@ -16,16 +16,7 @@ final class GameHubClient: ObservableObject {
     private(set) var playerName: String = ""
     private(set) var playerId: String = ""
 
-    nonisolated static var defaultHubURL: URL {
-        #if DEBUG
-        // iOS Simulator can reach the host machine's localhost directly.
-        return URL(string: "http://localhost:5010/hub/game")!
-        #else
-        return URL(string: "https://jeffopolydeal.azurewebsites.net/hub/game")!
-        #endif
-    }
-
-    init(baseURL: URL = GameHubClient.defaultHubURL) {
+    init(baseURL: URL = AppConfiguration.hubURL) {
         connection = HubConnectionBuilder(url: baseURL)
             .withJSONHubProtocol()
             .withAutoReconnect()
@@ -207,8 +198,10 @@ final class GameHubClient: ObservableObject {
         startContinuation = nil
     }
 
-    fileprivate func handleConnectionClose() {
+    fileprivate func handleConnectionClose(error: Error?) {
         isConnected = false
+        startContinuation?.resume(throwing: error ?? URLError(.cannotConnectToHost))
+        startContinuation = nil
     }
 
     fileprivate func handleReconnected() {
@@ -232,10 +225,10 @@ final class GameHubClient: ObservableObject {
             Task { @MainActor in self.owner?.handleConnectionFailedToOpen(error: error) }
         }
         func connectionDidClose(error: Error?) {
-            Task { @MainActor in self.owner?.handleConnectionClose() }
+            Task { @MainActor in self.owner?.handleConnectionClose(error: error) }
         }
         func connectionWillReconnect(error: Error) {
-            Task { @MainActor in self.owner?.handleConnectionClose() }
+            Task { @MainActor in self.owner?.handleConnectionClose(error: error) }
         }
         func connectionDidReconnect() {
             Task { @MainActor in self.owner?.handleReconnected() }

@@ -4,13 +4,13 @@ import UIKit
 /// Lets nearby devices discover in-progress lobbies without typing a code.
 /// This is discovery-only — no MCSession/peer connection is ever established;
 /// the actual game still runs entirely over the existing SignalR hub once a
-/// player taps a discovered game and it fills in the code. A host advertises
-/// its game code while sitting in the Lobby phase; anyone on the Join screen
-/// browses for those adverts over Bluetooth/local Wi-Fi.
+/// player taps a discovered game and it fills in the code. Every iOS device in
+/// a lobby advertises its shared game code; joiners group those adverts into
+/// one game over Bluetooth/local Wi-Fi.
 @MainActor
 final class NearbyGamesService: NSObject, ObservableObject {
     struct NearbyGame: Identifiable, Hashable {
-        let id: MCPeerID
+        var id: String { gameCode }
         let hostName: String
         let gameCode: String
     }
@@ -23,6 +23,7 @@ final class NearbyGamesService: NSObject, ObservableObject {
     private let peerID = MCPeerID(displayName: UIDevice.current.name)
     private var advertiser: MCNearbyServiceAdvertiser?
     private var browser: MCNearbyServiceBrowser?
+    private var gamesByPeer: [MCPeerID: NearbyGame] = [:]
 
     // MARK: - Host side
 
@@ -53,7 +54,15 @@ final class NearbyGamesService: NSObject, ObservableObject {
     func stopBrowsing() {
         browser?.stopBrowsingForPeers()
         browser = nil
+        gamesByPeer = [:]
         nearbyGames = []
+    }
+
+    private func refreshNearbyGames() {
+        nearbyGames = Dictionary(grouping: gamesByPeer.values, by: \.gameCode)
+            .values
+            .compactMap(\.first)
+            .sorted { $0.gameCode < $1.gameCode }
     }
 }
 
@@ -70,17 +79,20 @@ extension NearbyGamesService: MCNearbyServiceAdvertiserDelegate {
 
 extension NearbyGamesService: MCNearbyServiceBrowserDelegate {
     nonisolated func browser(_ browser: MCNearbyServiceBrowser, foundPeer peerID: MCPeerID, withDiscoveryInfo info: [String: String]?) {
-        guard let code = info?["code"] else { return }
+        guard let advertisedCode = info?["code"] else { return }
+        let code = advertisedCode.trimmingCharacters(in: .whitespacesAndNewlines).uppercased()
+        guard !code.isEmpty else { return }
         let host = info?["host"] ?? peerID.displayName
         Task { @MainActor in
-            guard !self.nearbyGames.contains(where: { $0.id == peerID }) else { return }
-            self.nearbyGames.append(NearbyGame(id: peerID, hostName: host, gameCode: code))
+            self.gamesByPeer[peerID] = NearbyGame(hostName: host, gameCode: code)
+            self.refreshNearbyGames()
         }
     }
 
     nonisolated func browser(_ browser: MCNearbyServiceBrowser, lostPeer peerID: MCPeerID) {
         Task { @MainActor in
-            self.nearbyGames.removeAll { $0.id == peerID }
+            self.gamesByPeer.removeValue(forKey: peerID)
+            self.refreshNearbyGames()
         }
     }
 }

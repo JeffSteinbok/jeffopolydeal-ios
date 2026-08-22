@@ -22,7 +22,7 @@ The project is configured for automatic signing with the app's Apple development
 
 ## Server configuration
 
-Release builds connect to `https://jeffopolydeal.azurewebsites.net`. Debug builds connect to the backend at `http://localhost:5010`.
+The app connects to `https://jeffopolydeal.azurewebsites.net` by default. To use a local or alternate server, change `JEFFOPOLYDEAL_BASE_URL` in `project.yml`, then regenerate the Xcode project. A physical device cannot reach a server through `localhost`; use your Mac's LAN address or a trusted HTTPS development endpoint.
 
 Start the backend from the [main Jeffopoly Deal repository](https://github.com/JeffSteinbok/jeffopolydeal):
 

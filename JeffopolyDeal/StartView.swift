@@ -124,7 +124,7 @@ struct StartView: View {
                             gameCode = game.gameCode
                         } label: {
                             HStack {
-                                Text(game.hostName)
+                                Text("\(game.hostName)'s Game")
                                 Spacer()
                                 Text(game.gameCode).font(.system(.body, design: .monospaced).bold())
                             }

@@ -22,6 +22,8 @@
 	<string>1</string>
 	<key>ITSAppUsesNonExemptEncryption</key>
 	<false/>
+	<key>JEFFOPOLYDEAL_BASE_URL</key>
+	<string>https://jeffopolydeal.azurewebsites.net</string>
 	<key>NSAppTransportSecurity</key>
 	<dict>
 		<key>NSExceptionDomains</key>
@@ -33,6 +35,8 @@
 			</dict>
 		</dict>
 	</dict>
+	<key>NSBluetoothAlwaysUsageDescription</key>
+	<string>Jeffopoly Deal uses Bluetooth to discover games hosted nearby.</string>
 	<key>NSBonjourServices</key>
 	<array>
 		<string>_jeffopolydl._tcp</string>

@@ -41,7 +41,9 @@ targets:
             localhost:
               NSExceptionAllowsInsecureHTTPLoads: true
         ITSAppUsesNonExemptEncryption: false
+        JEFFOPOLYDEAL_BASE_URL: https://jeffopolydeal.azurewebsites.net
         NSLocalNetworkUsageDescription: Jeffopoly Deal uses your local network to find nearby games hosted by friends.
+        NSBluetoothAlwaysUsageDescription: Jeffopoly Deal uses Bluetooth to discover games hosted nearby.
         NSBonjourServices:
           - _jeffopolydl._tcp
           - _jeffopolydl._udp

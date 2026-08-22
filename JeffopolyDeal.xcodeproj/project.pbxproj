@@ -33,6 +33,7 @@
 		B9BDD767C00AD5C274D670E1 /* SignalRClient in Frameworks */ = {isa = PBXBuildFile; productRef = 09DD40C8A9BF8574E7BDBFE5 /* SignalRClient */; };
 		C60BC7931C47EA7A424F0594 /* Inter-ExtraBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 39492BE415F85B2CD1CF32D1 /* Inter-ExtraBold.ttf */; };
 		C60D8432648BB2E735F02A8B /* BoardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D51FBB97CD7A601D58ACDE7 /* BoardView.swift */; };
+		D50A5785527D2748ECC2B566 /* AppConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 001B346A829E78D3E09B23EF /* AppConfiguration.swift */; };
 		D600FB609644A76E11EA1E07 /* JeffopolyDealApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA4684735EFC1B6BD1745648 /* JeffopolyDealApp.swift */; };
 		D755C20B9E1BADB0283D2AA6 /* SVGPath.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F7FFC1123CD4F8F19535B26 /* SVGPath.swift */; };
 		E085845C524941A3A67A823F /* Inter-Black.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 3A0AAB6C882AC7DF6F93E3FD /* Inter-Black.ttf */; };
@@ -42,6 +43,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		001B346A829E78D3E09B23EF /* AppConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppConfiguration.swift; sourceTree = "<group>"; };
 		0468683AFDFCA1B3B78B4112 /* Inter-SemiBold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Inter-SemiBold.ttf"; sourceTree = "<group>"; };
 		06E1E09CAFA984026AB73880 /* InterFont.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InterFont.swift; sourceTree = "<group>"; };
 		0BE72948B1144334117E19FD /* ActionResponseSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActionResponseSheet.swift; sourceTree = "<group>"; };
@@ -153,6 +155,7 @@
 			children = (
 				0BE72948B1144334117E19FD /* ActionResponseSheet.swift */,
 				FEC8CFB2B5603A191202D52E /* AppBackground.swift */,
+				001B346A829E78D3E09B23EF /* AppConfiguration.swift */,
 				ED553198986784A92FFC8689 /* AppRootView.swift */,
 				5C2D85050D7E5B540ED916C8 /* Assets.xcassets */,
 				4D51FBB97CD7A601D58ACDE7 /* BoardView.swift */,
@@ -259,6 +262,7 @@
 			files = (
 				386D2F99B9A6C0359D7C5CB3 /* ActionResponseSheet.swift in Sources */,
 				EE38895599F13A8C06E6CFAE /* AppBackground.swift in Sources */,
+				D50A5785527D2748ECC2B566 /* AppConfiguration.swift in Sources */,
 				B6B49E6B24D5813469D64E0E /* AppRootView.swift in Sources */,
 				C60D8432648BB2E735F02A8B /* BoardView.swift in Sources */,
 				213A1FEF91F8424828C24A77 /* CardModel.swift in Sources */,

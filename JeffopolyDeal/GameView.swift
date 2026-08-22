@@ -105,7 +105,7 @@ private struct LobbyView: View {
     private let minPlayers = 2
 
     @StateObject private var nearby = NearbyGamesService()
-    private var myName: String { state.players.first { $0.playerId == myPlayerId }?.name ?? "" }
+    private var hostName: String { state.players.first?.name ?? "Nearby Host" }
 
     var body: some View {
         VStack(spacing: 20) {
@@ -170,13 +170,13 @@ private struct LobbyView: View {
         }
         .padding()
         .appBackground()
-        .onAppear { nearby.startAdvertising(gameCode: state.gameCode, hostName: myName) }
+        .onAppear { nearby.startAdvertising(gameCode: state.gameCode, hostName: hostName) }
         .onDisappear { nearby.stopAdvertising() }
     }
 
     private var shareURL: URL {
         // Mirrors the web's `${origin}?join=${gameCode}` deep link.
-        URL(string: "https://jeffopolydeal.azurewebsites.net?join=\(state.gameCode)")!
+        AppConfiguration.baseURL.appending(queryItems: [URLQueryItem(name: "join", value: state.gameCode)])
     }
 }
 
