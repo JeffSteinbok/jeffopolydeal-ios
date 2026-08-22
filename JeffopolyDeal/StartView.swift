@@ -165,7 +165,7 @@ private struct AboutSheet: View {
         NavigationStack {
             List {
                 Text("Jeffopoly Deal is a real-time multiplayer take on the Monopoly Deal card game, built by Jeff Steinbok.")
-                Link("View on GitHub", destination: URL(string: "https://github.com/JeffSteinbok/jeffopolydeal")!)
+                Link("View on GitHub", destination: URL(string: "https://github.com/JeffSteinbok/jeffopolydeal-ios")!)
             }
             .navigationTitle("About")
             .navigationBarTitleDisplayMode(.inline)
