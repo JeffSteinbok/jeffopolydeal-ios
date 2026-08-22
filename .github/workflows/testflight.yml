@@ -7,6 +7,11 @@ on:
         description: Optional TestFlight release notes
         required: false
         type: string
+  workflow_call:
+    inputs:
+      release_notes:
+        required: false
+        type: string
 
 permissions:
   contents: read

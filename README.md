@@ -41,12 +41,13 @@ The backend, browser client, shared game engine, and bot AI remain in the [Jeffo
 
 ## TestFlight automation
 
-`Publish TestFlight` can be started manually from the repository's **Actions** tab.
+`Publish TestFlight` can be started manually from the repository's **Actions** tab. `Ensure Fresh TestFlight Build` runs weekly and publishes through the same workflow when the newest App Store Connect build is at least 60 days old.
 
 Configure these repository values under **Settings -> Secrets and variables -> Actions**:
 
 | Type | Name | Value |
 | --- | --- | --- |
+| Variable | `APPSTORE_APP_ID` | Numeric App Store Connect app ID |
 | Variable | `APPSTORE_ISSUER_ID` | App Store Connect API issuer ID |
 | Variable | `APPSTORE_API_KEY_ID` | App Store Connect API key ID |
 | Secret | `APPSTORE_API_PRIVATE_KEY` | Full contents of the `.p8` API private key |
@@ -54,4 +55,3 @@ Configure these repository values under **Settings -> Secrets and variables -> A
 | Secret | `APPSTORE_CERTIFICATES_PASSWORD` | Password for the `.p12` |
 
 The API key requires App Manager access. The provisioning profile must be named `AppStore net.steinbok.jeffopolydeal`.
-
