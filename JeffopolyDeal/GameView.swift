@@ -169,6 +169,7 @@ private struct LobbyView: View {
                 .buttonStyle(.bordered)
         }
         .padding()
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
         .appBackground()
         .onAppear { nearby.startAdvertising(gameCode: state.gameCode, hostName: hostName) }
         .onDisappear { nearby.stopAdvertising() }
