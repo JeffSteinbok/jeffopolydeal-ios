@@ -1,9 +1,8 @@
 import SwiftUI
 
-/// Mirrors src/web/App.tsx: owns session persistence and playerId, and
-/// switches between StartView and GameView based on whether a session is
-/// saved (a saved session on launch means "attempt RejoinGame", same as a
-/// page reload on web).
+/// Owns app entry: session persistence, playerId, and the switch between the
+/// native StartView and the embedded React gameplay client. A saved session on
+/// launch means "attempt RejoinGame", the same as a page reload on web.
 struct AppRootView: View {
     @State private var gameCode: String?
     @State private var playerName: String = ""
@@ -15,7 +14,7 @@ struct AppRootView: View {
     var body: some View {
         Group {
             if inGame {
-                GameView(
+                GameWebHostView(
                     gameCode: gameCode ?? "",
                     playerName: playerName,
                     playerId: playerId,

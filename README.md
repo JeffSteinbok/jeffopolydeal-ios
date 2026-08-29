@@ -32,12 +32,59 @@ dotnet run --project src/JeffopolyDeal.Game/JeffopolyDeal.Game.csproj
 
 ## Architecture
 
-- **SwiftUI** provides the native application and game interface.
-- **SignalR-Client-Swift** connects directly to the existing game hub.
-- **Multipeer Connectivity** advertises public game codes for nearby discovery.
-- Codable client models mirror the backend's public game-state contract.
+Gameplay is owned by the shared React client, not reimplemented natively. The
+app is a SwiftUI shell that owns app entry and platform capabilities and hands
+gameplay off to that client in a `WKWebView`.
 
-The backend, browser client, shared game engine, and bot AI remain in the [Jeffopoly Deal repository](https://github.com/JeffSteinbok/jeffopolydeal).
+```text
+ASP.NET game engine
+      │
+   SignalR
+      │
+React gameplay client
+   ┌──┴─────────────┐
+Browser          WKWebView
+                    │
+               SwiftUI shell
+       nearby / sharing / deep links
+       haptics / push / lifecycle
+```
+
+- **SwiftUI** owns app entry, session identity, and the native capabilities
+  below — not gameplay rendering or gameplay state.
+- **`GameWebHostView`** presents the React client and owns the loading, error,
+  offline, and retry chrome around it.
+- **Multipeer Connectivity** advertises public game codes for nearby discovery.
+- The backend, browser client, shared game engine, and bot AI remain in the
+  [Jeffopoly Deal repository](https://github.com/JeffSteinbok/jeffopolydeal).
+
+### Gameplay entry contract
+
+The shell enters gameplay by loading `{base}/play` with the player's identity in
+the query string. `JeffopolyDeal/Web/GameWebURL.swift` builds it and
+`src/web/utilities/NativeHost.ts` in the main repository parses it; the two must
+stay in sync.
+
+| Parameter | Meaning |
+| --- | --- |
+| `v` | Contract version, currently `1`. A mismatch makes the client ignore the entry. |
+| `host` | Which native shell is embedding, currently `ios`. |
+| `pid` | Player id, owned by the shell's `SessionStore` rather than web `localStorage`. |
+| `name` | Player display name. |
+| `game` | Four-character game code to join. |
+| `new` | `1` to ask the server for a new game instead of supplying `game`. |
+| `rejoin` | `1` to attempt `RejoinGame` rather than `JoinGame`. |
+
+Two conventions carry information back without a second gameplay state store in
+Swift:
+
+- After a create, the client rewrites its own URL with the code the server
+  assigned. The shell observes the web view's URL and persists the session.
+- To leave a game, the client navigates to the site root. The shell cancels that
+  navigation and returns to `StartView`.
+
+Navigation is otherwise pinned to `/play`: any other link opens in the system
+browser rather than replacing the game.
 
 ## TestFlight automation
 
