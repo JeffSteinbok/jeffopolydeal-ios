@@ -68,8 +68,16 @@ struct GameWebView: UIViewRepresentable {
         // A persistent data store keeps the client's own localStorage across
         // launches, matching how the same code behaves in a browser.
         configuration.websiteDataStore = .default()
+        configuration.userContentController.add(
+            context.coordinator.bridge,
+            name: GameBridge.handlerName
+        )
 
         let webView = WKWebView(frame: .zero, configuration: configuration)
+        // Distinguishes app traffic from browser and PWA traffic in server-side
+        // telemetry, which otherwise cannot tell them apart now that both reach
+        // the hub through the same JavaScript client.
+        webView.configuration.applicationNameForUserAgent = GameWebURL.userAgentSuffix
         webView.navigationDelegate = context.coordinator
         webView.uiDelegate = context.coordinator
         webView.allowsBackForwardNavigationGestures = false
@@ -91,6 +99,9 @@ struct GameWebView: UIViewRepresentable {
 
     static func dismantleUIView(_ webView: WKWebView, coordinator: Coordinator) {
         coordinator.stopObserving()
+        webView.configuration.userContentController.removeScriptMessageHandler(
+            forName: GameBridge.handlerName
+        )
         webView.stopLoading()
     }
 
@@ -98,12 +109,19 @@ struct GameWebView: UIViewRepresentable {
     final class Coordinator: NSObject, WKNavigationDelegate, WKUIDelegate {
         var parent: GameWebView
 
+        /// Owned here so it lives exactly as long as the web view it serves.
+        let bridge: GameBridge
+        private let haptics = HapticEngine()
+
         private var urlObservation: NSKeyValueObservation?
         private var loaded: (url: URL, token: Int)?
         private var reportedGameCode: String?
 
         init(_ parent: GameWebView) {
             self.parent = parent
+            self.bridge = GameBridge(haptics: haptics)
+            super.init()
+            haptics.prepare()
         }
 
         // MARK: - Loading

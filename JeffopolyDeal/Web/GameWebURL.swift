@@ -15,6 +15,11 @@ enum GameWebURL {
 
     static let hostIdentifier = "ios"
 
+    /// Appended to the web view's User-Agent so server-side telemetry can tell
+    /// app traffic from browser and PWA traffic. Both now reach the hub through
+    /// the same JavaScript client, so nothing else distinguishes them.
+    static let userAgentSuffix = "JeffopolyDeal-iOS"
+
     /// Gameplay URL for `gameCode`. An empty code asks the server for a new game.
     static func entry(
         baseURL: URL = AppConfiguration.baseURL,
