@@ -13,6 +13,20 @@ final class GameWebURLTests: XCTestCase {
 
     // MARK: - Building
 
+    func testStartURLCarriesOnlyTheHostAndNameHint() {
+        let url = GameWebURL.start(baseURL: base, playerNameHint: "  Jeff's iPhone  ")
+        XCTAssertEqual(query(url), [
+            "v": GameWebURL.contractVersion,
+            "host": "ios",
+            "name": "Jeff's iPhone",
+        ])
+    }
+
+    func testStartURLOmitsAnAbsentOrBlankNameHint() {
+        XCTAssertNil(query(GameWebURL.start(baseURL: base, playerNameHint: nil))["name"])
+        XCTAssertNil(query(GameWebURL.start(baseURL: base, playerNameHint: "   "))["name"])
+    }
+
     func testJoinURLCarriesIdentityAndCode() {
         let url = GameWebURL.entry(
             baseURL: base, gameCode: "abcd", playerName: "  Jeff  ",
@@ -59,14 +73,13 @@ final class GameWebURLTests: XCTestCase {
     func testRecognisesTheGameplaySurface() {
         let url = URL(string: "https://jeffopolydeal.example.com/play?v=1&game=ABCD")!
         XCTAssertTrue(GameWebURL.isGameplay(url, baseURL: base))
-        XCTAssertFalse(GameWebURL.isShellRoot(url, baseURL: base))
     }
 
-    func testRecognisesTheShellRootAsTheLeaveSignal() {
+    func testTreatsOurOwnStartPageAsInternal() {
+        // The client owns the start page now, so navigating back to it must not
+        // be mistaken for a link leaving the app.
         for candidate in ["https://jeffopolydeal.example.com", "https://jeffopolydeal.example.com/"] {
-            let url = URL(string: candidate)!
-            XCTAssertTrue(GameWebURL.isShellRoot(url, baseURL: base), candidate)
-            XCTAssertFalse(GameWebURL.isGameplay(url, baseURL: base), candidate)
+            XCTAssertTrue(GameWebURL.isSameOrigin(URL(string: candidate)!, baseURL: base), candidate)
         }
     }
 
@@ -78,39 +91,12 @@ final class GameWebURLTests: XCTestCase {
         ] {
             let url = URL(string: candidate)!
             XCTAssertFalse(GameWebURL.isGameplay(url, baseURL: base), candidate)
-            XCTAssertFalse(GameWebURL.isShellRoot(url, baseURL: base), candidate)
+            XCTAssertFalse(GameWebURL.isSameOrigin(url, baseURL: base), candidate)
         }
     }
 
     func testIgnoresNonWebSchemesOnOurOwnHost() {
         let url = URL(string: "javascript://jeffopolydeal.example.com/play")!
         XCTAssertFalse(GameWebURL.isSameOrigin(url, baseURL: base))
-    }
-
-    // MARK: - Reading back the resolved code
-
-    func testReadsTheCodeTheServerAssigned() {
-        let url = URL(string: "https://jeffopolydeal.example.com/play?v=1&host=ios&game=xnue")!
-        XCTAssertEqual(GameWebURL.gameCode(in: url, baseURL: base), "XNUE")
-    }
-
-    func testIgnoresACodeThatIsNotAGameCode() {
-        for candidate in [
-            "https://jeffopolydeal.example.com/play?v=1&game=AB",
-            "https://jeffopolydeal.example.com/play?v=1&game=TOOLONG",
-            "https://jeffopolydeal.example.com/play?v=1&game=AB!D",
-            "https://jeffopolydeal.example.com/play?v=1&new=1",
-            "https://jeffopolydeal.example.com/?game=ABCD",
-        ] {
-            XCTAssertNil(GameWebURL.gameCode(in: URL(string: candidate)!, baseURL: base), candidate)
-        }
-    }
-
-    func testRoundTripsAJoinURLBackToItsCode() {
-        let url = GameWebURL.entry(
-            baseURL: base, gameCode: "WXYZ", playerName: "Jeff",
-            playerId: "PID", isRejoin: false
-        )
-        XCTAssertEqual(GameWebURL.gameCode(in: url, baseURL: base), "WXYZ")
     }
 }

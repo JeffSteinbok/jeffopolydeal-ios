@@ -20,7 +20,22 @@ enum GameWebURL {
     /// the same JavaScript client, so nothing else distinguishes them.
     static let userAgentSuffix = "JeffopolyDeal-iOS"
 
-    /// Gameplay URL for `gameCode`. An empty code asks the server for a new game.
+    /// Where the shell starts the client: the web start page. The client owns
+    /// create, join, and the lobby; the shell contributes only the device name
+    /// as a hint for the name field, and nearby games over the bridge.
+    static func start(baseURL: URL = AppConfiguration.baseURL, playerNameHint: String? = nil) -> URL {
+        var items = [
+            URLQueryItem(name: "v", value: contractVersion),
+            URLQueryItem(name: "host", value: hostIdentifier),
+        ]
+        if let hint = playerNameHint?.trimmingCharacters(in: .whitespacesAndNewlines), !hint.isEmpty {
+            items.append(URLQueryItem(name: "name", value: hint))
+        }
+        return baseURL.appending(queryItems: items)
+    }
+
+    /// Direct entry into one game, for a shared link or a notification tap.
+    /// An empty code asks the server for a new game.
     static func entry(
         baseURL: URL = AppConfiguration.baseURL,
         gameCode: String,
@@ -54,12 +69,6 @@ enum GameWebURL {
             && normalizedPath(url) == normalizedPath(baseURL.appending(path: entryPath))
     }
 
-    /// True when `url` is our site root. The web client navigates there to say
-    /// "this player left the game", which is the shell's cue to pop to StartView.
-    static func isShellRoot(_ url: URL, baseURL: URL = AppConfiguration.baseURL) -> Bool {
-        isSameOrigin(url, baseURL: baseURL) && normalizedPath(url) == normalizedPath(baseURL)
-    }
-
     static func isSameOrigin(_ url: URL, baseURL: URL = AppConfiguration.baseURL) -> Bool {
         guard
             let host = url.host()?.lowercased(),
@@ -67,20 +76,6 @@ enum GameWebURL {
             let scheme = url.scheme?.lowercased()
         else { return false }
         return host == baseHost && ["http", "https"].contains(scheme)
-    }
-
-    /// The game code the client is currently showing. After a create, the client
-    /// rewrites its own URL with the code the server assigned, which is how the
-    /// shell learns the code it needs to persist a rejoin session.
-    static func gameCode(in url: URL, baseURL: URL = AppConfiguration.baseURL) -> String? {
-        guard
-            isGameplay(url, baseURL: baseURL),
-            let items = URLComponents(url: url, resolvingAgainstBaseURL: false)?.queryItems,
-            let code = items.first(where: { $0.name == "game" })?.value?.uppercased(),
-            code.count == 4,
-            code.allSatisfy({ $0.isLetter || $0.isNumber })
-        else { return nil }
-        return code
     }
 
     private static func normalizedPath(_ url: URL) -> String {

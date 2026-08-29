@@ -1,28 +1,21 @@
 import SwiftUI
 
-/// The native shell around the shared React gameplay client: it owns the window,
-/// the loading/error/retry chrome, and the trip back to StartView. Gameplay
-/// itself — rendering, interaction, and the SignalR connection — lives in the
-/// web client, so nothing here interprets game state.
+/// The native shell around the shared React client.
+///
+/// The client owns the whole player experience — start page, lobby, gameplay,
+/// and the SignalR connection. This view owns the window, the loading and error
+/// chrome, and the capabilities the web cannot have: local-network discovery,
+/// and enough session memory for notifications to route back to a game.
 struct GameWebHostView: View {
-    let gameCode: String
-    let playerName: String
-    let playerId: String
-    let isRejoin: Bool
-    var onGameCodeResolved: ((String) -> Void)? = nil
-    let onLeave: () -> Void
-
     @State private var isLoading = true
     @State private var failure: GameWebLoadFailure?
     @State private var reloadToken = 0
+    @State private var context: GameBridge.GameContext?
 
-    private var entryURL: URL {
-        GameWebURL.entry(
-            gameCode: gameCode,
-            playerName: playerName,
-            playerId: playerId,
-            isRejoin: isRejoin
-        )
+    @StateObject private var nearby = NearbyGamesService()
+
+    private var startURL: URL {
+        GameWebURL.start(playerNameHint: DeviceName.guessMyName())
     }
 
     var body: some View {
@@ -30,15 +23,15 @@ struct GameWebHostView: View {
             AppBackground()
 
             GameWebView(
-                entryURL: entryURL,
+                entryURL: startURL,
                 reloadToken: reloadToken,
+                nearbyGames: nearby.nearbyGames,
                 onLoadingChanged: { loading in
                     isLoading = loading
                     if loading { failure = nil }
                 },
                 onFailure: { failure = $0 },
-                onGameCodeResolved: { onGameCodeResolved?($0) },
-                onExit: onLeave
+                onGameContext: handleGameContext
             )
             .ignoresSafeArea()
             .opacity(failure == nil ? 1 : 0)
@@ -51,6 +44,36 @@ struct GameWebHostView: View {
         }
         .animation(.easeInOut(duration: 0.2), value: isLoading)
         .animation(.easeInOut(duration: 0.2), value: failure)
+        .onAppear { nearby.startBrowsing() }
+        .onDisappear {
+            nearby.stopBrowsing()
+            nearby.stopAdvertising()
+        }
+    }
+
+    /// Discovery is symmetric: a device sitting in a lobby advertises its code,
+    /// and a device that is not in one looks for codes to join. The client tells
+    /// us which of those we are; it never has to know Multipeer exists.
+    private func handleGameContext(_ context: GameBridge.GameContext) {
+        self.context = context
+
+        if context.isLobby, let code = context.gameCode {
+            nearby.stopBrowsing()
+            nearby.startAdvertising(gameCode: code, hostName: context.hostName ?? "Nearby Host")
+        } else {
+            nearby.stopAdvertising()
+            if context.gameCode == nil { nearby.startBrowsing() }
+        }
+
+        // Remembered only so a notification tap can route back to this game.
+        // Gameplay state stays in the client.
+        if let code = context.gameCode, let id = context.playerId {
+            SessionStore.saveSession(
+                Session(gameCode: code, playerName: context.playerName ?? "", playerId: id)
+            )
+        } else if context.gameCode == nil {
+            SessionStore.clearSession()
+        }
     }
 
     private var loadingView: some View {
@@ -62,10 +85,6 @@ struct GameWebHostView: View {
 
             ProgressView()
                 .controlSize(.large)
-
-            Text(isRejoin ? "Rejoining your game…" : "Connecting…")
-                .font(.footnote)
-                .foregroundStyle(.secondary)
         }
         .padding(32)
         .frame(maxWidth: .infinity, maxHeight: .infinity)
@@ -89,14 +108,9 @@ struct GameWebHostView: View {
                     .multilineTextAlignment(.center)
             }
 
-            VStack(spacing: 10) {
-                Button("Try Again", action: retry)
-                    .buttonStyle(.borderedProminent)
-                    .controlSize(.large)
-
-                Button("Leave Game", role: .destructive, action: onLeave)
-                    .buttonStyle(.bordered)
-            }
+            Button("Try Again", action: retry)
+                .buttonStyle(.borderedProminent)
+                .controlSize(.large)
         }
         .padding(32)
         .frame(maxWidth: .infinity, maxHeight: .infinity)

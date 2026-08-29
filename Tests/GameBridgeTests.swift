@@ -76,8 +76,8 @@ final class GameBridgeTests: XCTestCase {
     }
 
     func testIgnoresReservedTypesThatNothingConsumesYet() {
-        XCTAssertEqual(bridge.handle(message(type: "gameContext")), .ignoredUnknownType("gameContext"))
         XCTAssertEqual(bridge.handle(message(type: "lifecycle")), .ignoredUnknownType("lifecycle"))
+        XCTAssertEqual(bridge.handle(message(type: "somethingNewer")), .ignoredUnknownType("somethingNewer"))
         XCTAssertTrue(haptics.performed.isEmpty)
     }
 
@@ -108,5 +108,51 @@ final class GameBridgeTests: XCTestCase {
         // poison a subsequent retry of the same event.
         bridge.handle(["v": GameBridge.supportedVersion, "type": "haptic", "id": "x", "payload": "bad"])
         XCTAssertEqual(bridge.handle(message(id: "y")), .performed(.cardPlayed))
+    }
+}
+
+@MainActor
+final class GameBridgeContextTests: XCTestCase {
+    private var bridge: GameBridge!
+    private var contexts: [GameBridge.GameContext] = []
+
+    override func setUp() {
+        super.setUp()
+        contexts = []
+        bridge = GameBridge(haptics: SpyHaptics())
+        bridge.onGameContext = { [weak self] in self?.contexts.append($0) }
+    }
+
+    private func context(_ payload: [String: Any]) -> GameBridge.GameContext? {
+        bridge.handle(["v": GameBridge.supportedVersion, "type": "gameContext", "payload": payload])
+        return contexts.last
+    }
+
+    func testReportsALobbySoTheShellCanAdvertiseIt() {
+        let result = context(["gameCode": "abcd", "phase": "Lobby", "hostName": "Jeff"])
+        XCTAssertEqual(result?.gameCode, "ABCD")
+        XCTAssertTrue(result?.isLobby == true)
+        XCTAssertEqual(result?.hostName, "Jeff")
+    }
+
+    func testAGameInPlayIsNotALobby() {
+        XCTAssertFalse(context(["gameCode": "ABCD", "phase": "Play"])?.isLobby == true)
+    }
+
+    func testLeavingReportsNoGame() {
+        let result = context(["gameCode": NSNull(), "phase": NSNull()])
+        XCTAssertNil(result?.gameCode)
+        XCTAssertFalse(result?.isLobby == true)
+    }
+
+    func testCarriesIdentitySoNotificationsCanRouteBack() {
+        let result = context(["gameCode": "ABCD", "phase": "Lobby", "playerId": "PID", "playerName": "Jeff"])
+        XCTAssertEqual(result?.playerId, "PID")
+        XCTAssertEqual(result?.playerName, "Jeff")
+    }
+
+    func testRejectsAPayloadThatIsNotAnObject() {
+        bridge.handle(["v": GameBridge.supportedVersion, "type": "gameContext", "payload": "nope"])
+        XCTAssertTrue(contexts.isEmpty)
     }
 }

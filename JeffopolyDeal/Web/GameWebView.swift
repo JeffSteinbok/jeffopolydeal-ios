@@ -1,3 +1,4 @@
+import OSLog
 import SwiftUI
 import WebKit
 
@@ -54,10 +55,11 @@ struct GameWebView: UIViewRepresentable {
     let entryURL: URL
     /// Changing this re-loads the entry URL; the retry button bumps it.
     let reloadToken: Int
+    /// Games found on the local network, pushed into the client's start page.
+    let nearbyGames: [NearbyGamesService.NearbyGame]
     let onLoadingChanged: (Bool) -> Void
     let onFailure: (GameWebLoadFailure) -> Void
-    let onGameCodeResolved: (String) -> Void
-    let onExit: () -> Void
+    let onGameContext: (GameBridge.GameContext) -> Void
 
     func makeCoordinator() -> Coordinator { Coordinator(self) }
 
@@ -88,17 +90,16 @@ struct GameWebView: UIViewRepresentable {
         webView.backgroundColor = .clear
         webView.scrollView.backgroundColor = .clear
 
-        context.coordinator.startObserving(webView)
         return webView
     }
 
     func updateUIView(_ webView: WKWebView, context: Context) {
         context.coordinator.parent = self
         context.coordinator.loadIfNeeded(entryURL, token: reloadToken, in: webView)
+        context.coordinator.pushNearbyGames(nearbyGames, in: webView)
     }
 
     static func dismantleUIView(_ webView: WKWebView, coordinator: Coordinator) {
-        coordinator.stopObserving()
         webView.configuration.userContentController.removeScriptMessageHandler(
             forName: GameBridge.handlerName
         )
@@ -113,15 +114,18 @@ struct GameWebView: UIViewRepresentable {
         let bridge: GameBridge
         private let haptics = HapticEngine()
 
-        private var urlObservation: NSKeyValueObservation?
         private var loaded: (url: URL, token: Int)?
-        private var reportedGameCode: String?
+        private var isPageLoaded = false
+        private var pushedNearbyGames: String?
 
         init(_ parent: GameWebView) {
             self.parent = parent
             self.bridge = GameBridge(haptics: haptics)
             super.init()
             haptics.prepare()
+            bridge.onGameContext = { [weak self] context in
+                self?.parent.onGameContext(context)
+            }
         }
 
         // MARK: - Loading
@@ -139,32 +143,32 @@ struct GameWebView: UIViewRepresentable {
             startLoad(url, token: token, in: webView)
         }
 
+        private static let log = Logger(subsystem: "net.steinbok.jeffopolydeal", category: "webview")
+
         private func startLoad(_ url: URL, token: Int, in webView: WKWebView) {
+            Self.log.debug("loading \(url.absoluteString, privacy: .public)")
             loaded = (url, token)
-            reportedGameCode = GameWebURL.gameCode(in: url)
+            isPageLoaded = false
+            pushedNearbyGames = nil
             parent.onLoadingChanged(true)
             webView.load(URLRequest(url: url))
         }
 
-        /// The client rewrites its own URL once the server assigns a game code,
-        /// via `history.replaceState`. That fires no navigation callback, so KVO
-        /// on `url` is what surfaces it.
-        func startObserving(_ webView: WKWebView) {
-            urlObservation = webView.observe(\.url, options: [.new]) { [weak self] _, change in
-                guard let url = change.newValue.flatMap({ $0 }) else { return }
-                Task { @MainActor in self?.handleURLChange(url) }
-            }
-        }
+        // MARK: - Nearby games
 
-        func stopObserving() {
-            urlObservation?.invalidate()
-            urlObservation = nil
-        }
+        /// Hands the client what Multipeer found. Local-network discovery has no
+        /// web equivalent, so this is the one thing the shell pushes inward.
+        func pushNearbyGames(_ games: [NearbyGamesService.NearbyGame], in webView: WKWebView) {
+            guard isPageLoaded else { return }
 
-        private func handleURLChange(_ url: URL) {
-            guard let code = GameWebURL.gameCode(in: url), code != reportedGameCode else { return }
-            reportedGameCode = code
-            parent.onGameCodeResolved(code)
+            let payload = games.map { ["gameCode": $0.gameCode, "hostName": $0.hostName] }
+            guard let data = try? JSONSerialization.data(withJSONObject: payload),
+                  let json = String(data: data, encoding: .utf8),
+                  json != pushedNearbyGames
+            else { return }
+
+            pushedNearbyGames = json
+            webView.evaluateJavaScript("window.jeffopolyNative?.setNearbyGames(\(json))")
         }
 
         // MARK: - Navigation policy
@@ -186,18 +190,13 @@ struct GameWebView: UIViewRepresentable {
                 return
             }
 
-            if GameWebURL.isGameplay(url) {
-                decisionHandler(.allow)
+            // The client owns everything on our origin now, start page included.
+            guard GameWebURL.isSameOrigin(url) else {
+                decisionHandler(.cancel)
+                openExternally(url)
                 return
             }
-
-            decisionHandler(.cancel)
-
-            if GameWebURL.isShellRoot(url) {
-                parent.onExit()
-            } else {
-                openExternally(url)
-            }
+            decisionHandler(.allow)
         }
 
         func webView(
@@ -225,7 +224,11 @@ struct GameWebView: UIViewRepresentable {
         }
 
         func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
+            isPageLoaded = true
             parent.onLoadingChanged(false)
+            // A fresh page has no nearby games until we hand them over again.
+            pushedNearbyGames = nil
+            pushNearbyGames(parent.nearbyGames, in: webView)
         }
 
         func webView(_ webView: WKWebView, didFail navigation: WKNavigation!, withError error: Error) {
@@ -240,6 +243,7 @@ struct GameWebView: UIViewRepresentable {
             // The renderer was jettisoned, usually under memory pressure. Reload
             // rather than leaving the player staring at a blank game.
             guard let url = loaded?.url else { return }
+            isPageLoaded = false
             parent.onLoadingChanged(true)
             webView.load(URLRequest(url: url))
         }
