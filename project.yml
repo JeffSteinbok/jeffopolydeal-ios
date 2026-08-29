@@ -59,3 +59,28 @@ targets:
         ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
         MARKETING_VERSION: "1.0"
         CURRENT_PROJECT_VERSION: "1"
+
+  JeffopolyDealTests:
+    type: bundle.unit-test
+    platform: iOS
+    sources:
+      - Tests
+    dependencies:
+      - target: JeffopolyDeal
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: net.steinbok.jeffopolydeal.tests
+        DEVELOPMENT_TEAM: Y7KVX7666P
+        SWIFT_VERSION: "5.0"
+        GENERATE_INFOPLIST_FILE: YES
+
+schemes:
+  JeffopolyDeal:
+    build:
+      targets:
+        JeffopolyDeal: all
+    test:
+      targets:
+        - JeffopolyDealTests
+    run:
+      config: Debug

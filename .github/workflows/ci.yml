@@ -42,3 +42,15 @@ jobs:
             -sdk iphonesimulator \
             -destination "generic/platform=iOS Simulator" \
             CODE_SIGNING_ALLOWED=NO
+
+      - name: Run tests
+        run: |
+          # Resolve whatever iPhone the runner actually has rather than pinning a
+          # model name, which changes with each Xcode release.
+          UDID=$(xcrun simctl list devices available --json \
+            | jq -r '[.devices[][] | select(.name | test("iPhone"))][0].udid')
+          xcodebuild test \
+            -project JeffopolyDeal.xcodeproj \
+            -scheme JeffopolyDeal \
+            -destination "id=$UDID" \
+            CODE_SIGNING_ALLOWED=NO
