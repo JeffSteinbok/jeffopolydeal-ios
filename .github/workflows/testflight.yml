@@ -92,5 +92,7 @@ jobs:
           api-key-id: ${{ vars.APPSTORE_API_KEY_ID }}
           api-private-key: ${{ secrets.APPSTORE_API_PRIVATE_KEY }}
           release-notes: ${{ inputs.release_notes || format('Automated build {0}', steps.build.outputs.number) }}
-          uses-non-exempt-encryption: "false"
+          # Not set here: Info.plist already declares ITSAppUsesNonExemptEncryption,
+          # so App Store Connect has the value at upload time and rejects a second
+          # write with a 409 — which failed the run after a successful upload.
           wait-for-processing: "true"
