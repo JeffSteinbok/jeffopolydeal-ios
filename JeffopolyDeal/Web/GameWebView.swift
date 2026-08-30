@@ -108,6 +108,8 @@ struct GameWebView: UIViewRepresentable {
         context.coordinator.parent = self
         context.coordinator.loadIfNeeded(entryURL, token: reloadToken, in: webView)
         context.coordinator.pushInboundState(in: webView)
+        // Insets are not final on the first pass; catch the settled values.
+        DispatchQueue.main.async { context.coordinator.refreshSafeArea(in: webView) }
     }
 
     static func dismantleUIView(_ webView: WKWebView, coordinator: Coordinator) {
@@ -130,6 +132,7 @@ struct GameWebView: UIViewRepresentable {
         private var pushedNearbyGames: String?
         private var pushedPushToken: String?
         private var pushedDiagnostics: String?
+        private var pushedSafeArea: String?
         private var pushedForegroundToken: Int?
         private var pushedGameCode: String?
         private var inboundRetries = 0
@@ -176,6 +179,7 @@ struct GameWebView: UIViewRepresentable {
             pushedNearbyGames = nil
             pushedPushToken = nil
             pushedDiagnostics = nil
+            pushedSafeArea = nil
             pushedForegroundToken = nil
             pushedGameCode = nil
             inboundRetries = 0
@@ -239,6 +243,20 @@ struct GameWebView: UIViewRepresentable {
                 pushedPushToken = token
                 Self.log.info("handing APNs token to the client, length \(token.count, privacy: .public)")
                 call("setPushToken(\(quoted(token)))", in: webView)
+            }
+
+            // env(safe-area-inset-*) reads 0 on the client's first layout and
+            // only corrects afterwards, which is too late for anything sized
+            // once. Measure it here, where it is already known, and hand it over.
+            let insets = webView.window?.safeAreaInsets ?? webView.safeAreaInsets
+            let safeArea = "{\"top\":\(Int(insets.top)),\"bottom\":\(Int(insets.bottom))}"
+            if safeArea != pushedSafeArea, insets.bottom > 0 || insets.top > 0 {
+                pushedSafeArea = safeArea
+                Self.log.info("pushing safe area \(safeArea, privacy: .public)")
+                webView.evaluateJavaScript("JSON.stringify({api:typeof window.jeffopolyNative, fn:typeof (window.jeffopolyNative||{}).setSafeAreaInsets, v:document.documentElement.style.getPropertyValue('--native-safe-bottom')})") { v, _ in
+                    Self.log.info("VERIFY \(String(describing: v), privacy: .public)")
+                }
+                call("setSafeAreaInsets(\(safeArea))", in: webView)
             }
 
             if parent.pushDiagnostics != pushedDiagnostics {
@@ -328,6 +346,14 @@ struct GameWebView: UIViewRepresentable {
 
         func webView(_ webView: WKWebView, didStartProvisionalNavigation navigation: WKNavigation!) {
             parent.onLoadingChanged(true)
+        }
+
+        /// Safe-area insets are not final at didFinish, so push again once the
+        /// layout settles. Goes through pushInboundState, not straight to
+        /// delivery: the client may still not exist, and bypassing that check
+        /// is how inbound values get dropped silently.
+        func refreshSafeArea(in webView: WKWebView) {
+            pushInboundState(in: webView)
         }
 
         func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
