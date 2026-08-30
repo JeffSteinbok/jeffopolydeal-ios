@@ -48,6 +48,14 @@ targets:
         ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
         MARKETING_VERSION: "1.0"
         CURRENT_PROJECT_VERSION: "1"
+      configs:
+        # APNs uses separate sandbox and production gateways, and a build must
+        # declare which one its device tokens belong to. A TestFlight or App
+        # Store build talks to production; a build run from Xcode does not.
+        Debug:
+          APS_ENVIRONMENT: development
+        Release:
+          APS_ENVIRONMENT: production
 
   JeffopolyDealTests:
     type: bundle.unit-test
