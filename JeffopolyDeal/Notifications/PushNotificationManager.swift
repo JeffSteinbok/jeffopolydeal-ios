@@ -1,3 +1,4 @@
+import OSLog
 import UIKit
 import UserNotifications
 
@@ -16,7 +17,7 @@ final class AppDelegate: NSObject, UIApplicationDelegate {
     }
 
     func application(_ application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: Error) {
-        PushNotificationManager.shared.didFailToRegister()
+        PushNotificationManager.shared.didFailToRegister(error: error)
     }
 }
 
@@ -30,7 +31,14 @@ final class AppDelegate: NSObject, UIApplicationDelegate {
 final class PushNotificationManager: NSObject, ObservableObject, UNUserNotificationCenterDelegate {
     static let shared = PushNotificationManager()
 
+    private static let log = Logger(subsystem: "net.steinbok.jeffopolydeal", category: "push")
+
     @Published private(set) var deviceToken: String?
+
+    /// Why push is or is not working, in a form that can be reported to the
+    /// server. Without it, "no token" on the server is indistinguishable from
+    /// a dozen different device-side causes.
+    @Published private(set) var diagnostics: String = "starting"
 
     /// Set when a notification tap asks for a particular game. The host view
     /// clears it once the client has been told, so a second tap still routes.
@@ -42,11 +50,18 @@ final class PushNotificationManager: NSObject, ObservableObject, UNUserNotificat
     }
 
     func didRegister(deviceToken: Data) {
-        self.deviceToken = deviceToken.map { String(format: "%02x", $0) }.joined()
+        let hex = deviceToken.map { String(format: "%02x", $0) }.joined()
+        self.deviceToken = hex
+        diagnostics = "token-received-length-\(hex.count)"
+        // Length only — the token itself is not something to put in a log.
+        Self.log.info("APNs token received, length \(hex.count, privacy: .public)")
     }
 
-    func didFailToRegister() {
+    func didFailToRegister(error: Error? = nil) {
         deviceToken = nil
+        let reason = (error as NSError?).map { "\($0.domain)-\($0.code)" } ?? "unknown"
+        diagnostics = "registration-failed-\(reason)"
+        Self.log.error("APNs registration failed: \(reason, privacy: .public)")
     }
 
     nonisolated func userNotificationCenter(
@@ -79,8 +94,15 @@ final class PushNotificationManager: NSObject, ObservableObject, UNUserNotificat
             isAuthorized = (try? await center.requestAuthorization(options: [.alert, .badge, .sound])) == true
         }
 
+        Self.log.info("notification authorization status \(settings.authorizationStatus.rawValue, privacy: .public), authorized \(isAuthorized, privacy: .public)")
+
         if isAuthorized {
+            diagnostics = "authorized-awaiting-token"
+            Self.log.info("registering for remote notifications")
             UIApplication.shared.registerForRemoteNotifications()
+        } else {
+            diagnostics = "not-authorized-status-\(settings.authorizationStatus.rawValue)"
+            Self.log.error("not authorized for notifications; no APNs token will be requested")
         }
     }
 }

@@ -59,6 +59,8 @@ struct GameWebView: UIViewRepresentable {
     let nearbyGames: [NearbyGamesService.NearbyGame]
     /// APNs token, which only the shell can hold. The client registers it.
     let pushToken: String?
+    /// Why push is or is not working on this device, reported onward for support.
+    let pushDiagnostics: String
     /// Bumped when the app returns to the foreground, so the client can check a
     /// connection that iOS may have frozen or killed while suspended.
     let foregroundToken: Int
@@ -127,6 +129,7 @@ struct GameWebView: UIViewRepresentable {
         private var isPageLoaded = false
         private var pushedNearbyGames: String?
         private var pushedPushToken: String?
+        private var pushedDiagnostics: String?
         private var pushedForegroundToken: Int?
         private var pushedGameCode: String?
 
@@ -170,6 +173,7 @@ struct GameWebView: UIViewRepresentable {
         private func resetPushedState() {
             pushedNearbyGames = nil
             pushedPushToken = nil
+            pushedDiagnostics = nil
             pushedForegroundToken = nil
             pushedGameCode = nil
         }
@@ -189,7 +193,13 @@ struct GameWebView: UIViewRepresentable {
 
             if let token = parent.pushToken, token != pushedPushToken {
                 pushedPushToken = token
+                Self.log.info("handing APNs token to the client, length \(token.count, privacy: .public)")
                 call("setPushToken(\(quoted(token)))", in: webView)
+            }
+
+            if parent.pushDiagnostics != pushedDiagnostics {
+                pushedDiagnostics = parent.pushDiagnostics
+                call("setPushDiagnostics(\(quoted(parent.pushDiagnostics)))", in: webView)
             }
 
             if parent.foregroundToken != pushedForegroundToken {
