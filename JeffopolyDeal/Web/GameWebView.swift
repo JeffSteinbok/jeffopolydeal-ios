@@ -132,6 +132,8 @@ struct GameWebView: UIViewRepresentable {
         private var pushedDiagnostics: String?
         private var pushedForegroundToken: Int?
         private var pushedGameCode: String?
+        private var inboundRetries = 0
+        private var reportedInboundGiveUp = false
 
         init(_ parent: GameWebView) {
             self.parent = parent
@@ -176,6 +178,8 @@ struct GameWebView: UIViewRepresentable {
             pushedDiagnostics = nil
             pushedForegroundToken = nil
             pushedGameCode = nil
+            inboundRetries = 0
+            reportedInboundGiveUp = false
         }
 
         // MARK: - Inbound state
@@ -186,6 +190,46 @@ struct GameWebView: UIViewRepresentable {
         func pushInboundState(in webView: WKWebView) {
             guard isPageLoaded else { return }
 
+            // The client installs window.jeffopolyNative from a module script,
+            // which is deferred and so has usually not run when didFinish fires.
+            // Anything sent before then went nowhere: the optional call was a
+            // silent no-op and the value was marked delivered regardless. Wait
+            // for the client to exist, then send, and only record what landed.
+            webView.evaluateJavaScript("typeof window.jeffopolyNative === 'object'") { [weak self] ready, _ in
+                guard let self else { return }
+                guard (ready as? Bool) == true else {
+                    self.scheduleInboundRetry(in: webView)
+                    return
+                }
+                self.deliverInboundState(in: webView)
+            }
+        }
+
+        /// The module had not run yet. Try again shortly rather than dropping
+        /// state on the floor.
+        private func scheduleInboundRetry(in webView: WKWebView) {
+            guard inboundRetries < 40 else {
+                // Ten seconds without the client appearing means something is
+                // badly wrong. Say so loudly: this failing quietly is exactly
+                // what made the push-token loss so hard to find.
+                if !reportedInboundGiveUp {
+                    reportedInboundGiveUp = true
+                    Self.log.error(
+                        "inbound bridge never became ready; nearby games, push token and deep links will not reach the client")
+                }
+                return
+            }
+            if inboundRetries == 1 {
+                Self.log.notice("inbound bridge not ready yet; retrying")
+            }
+            inboundRetries += 1
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.25) { [weak self, weak webView] in
+                guard let self, let webView else { return }
+                self.pushInboundState(in: webView)
+            }
+        }
+
+        private func deliverInboundState(in webView: WKWebView) {
             if let json = encode(parent.nearbyGames), json != pushedNearbyGames {
                 pushedNearbyGames = json
                 call("setNearbyGames(\(json))", in: webView)
