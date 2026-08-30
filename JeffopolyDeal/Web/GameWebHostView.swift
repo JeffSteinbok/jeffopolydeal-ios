@@ -11,8 +11,11 @@ struct GameWebHostView: View {
     @State private var failure: GameWebLoadFailure?
     @State private var reloadToken = 0
     @State private var context: GameBridge.GameContext?
+    @State private var foregroundToken = 0
 
     @StateObject private var nearby = NearbyGamesService()
+    @ObservedObject private var push = PushNotificationManager.shared
+    @Environment(\.scenePhase) private var scenePhase
 
     private var startURL: URL {
         GameWebURL.start(playerNameHint: DeviceName.guessMyName())
@@ -26,12 +29,16 @@ struct GameWebHostView: View {
                 entryURL: startURL,
                 reloadToken: reloadToken,
                 nearbyGames: nearby.nearbyGames,
+                pushToken: push.deviceToken,
+                foregroundToken: foregroundToken,
+                requestedGameCode: push.requestedGameCode,
                 onLoadingChanged: { loading in
                     isLoading = loading
                     if loading { failure = nil }
                 },
                 onFailure: { failure = $0 },
-                onGameContext: handleGameContext
+                onGameContext: handleGameContext,
+                onRequestedGameHandled: { push.requestedGameCode = nil }
             )
             .ignoresSafeArea()
             .opacity(failure == nil ? 1 : 0)
@@ -44,6 +51,19 @@ struct GameWebHostView: View {
         }
         .animation(.easeInOut(duration: 0.2), value: isLoading)
         .animation(.easeInOut(duration: 0.2), value: failure)
+        .onChange(of: scenePhase) { _, phase in
+            // iOS freezes the web view's timers and sockets in the background,
+            // so returning is the client's cue to check a connection that may
+            // have died without either side noticing.
+            if phase == .active { foregroundToken += 1 }
+        }
+        .onOpenURL { url in
+            // A shared invite opened from Messages or Safari. The client is
+            // already running, so hand it the code rather than reloading.
+            if let code = GameWebURL.sharedGameCode(in: url) {
+                push.requestedGameCode = code
+            }
+        }
         .onAppear { nearby.startBrowsing() }
         .onDisappear {
             nearby.stopBrowsing()
