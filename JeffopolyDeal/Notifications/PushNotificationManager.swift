@@ -68,10 +68,9 @@ final class PushNotificationManager: NSObject, ObservableObject, UNUserNotificat
         _ center: UNUserNotificationCenter,
         willPresent notification: UNNotification
     ) async -> UNNotificationPresentationOptions {
-        // Show it even with the app open. Suppressing the banner in the
-        // foreground meant a player watching their own screen saw nothing at
-        // all, which is indistinguishable from notifications being broken.
-        [.banner, .list, .sound]
+        // Nothing at all with the app open: the client already shows whose turn
+        // it is, so a banner and a sound are both just noise over the game.
+        []
     }
 
     /// A tap on a turn notification. The engine puts the game code in the payload
