@@ -20,8 +20,23 @@ final class GameBridge: NSObject, WKScriptMessageHandler {
 
     /// What the bridge did with a message. Returned so the routing is testable
     /// without constructing a `WKScriptMessage`, which has no public initialiser.
+    /// What game the client is in, as far as the shell needs to know. Not
+    /// gameplay state — the shell has no business interpreting a board.
+    struct GameContext: Equatable {
+        /// Nil once the player leaves, which is the cue to stop advertising.
+        let gameCode: String?
+        let phase: String?
+        let playerId: String?
+        let playerName: String?
+        /// Whoever created the game, shown to nearby devices.
+        let hostName: String?
+
+        var isLobby: Bool { phase == "Lobby" && gameCode != nil }
+    }
+
     enum Outcome: Equatable {
         case performed(HapticEvent)
+        case contextChanged(GameContext)
         case ignoredDuplicate
         case ignoredUnsupportedVersion(Int)
         case ignoredUnknownType(String)
@@ -30,6 +45,9 @@ final class GameBridge: NSObject, WKScriptMessageHandler {
     }
 
     private static let log = Logger(subsystem: "net.steinbok.jeffopolydeal", category: "bridge")
+
+    /// Called when the client reports a change of game. Set by the host view.
+    var onGameContext: ((GameContext) -> Void)?
 
     private let haptics: HapticPerforming
     private var seenIds: Set<String> = []
@@ -56,6 +74,8 @@ final class GameBridge: NSObject, WKScriptMessageHandler {
         switch outcome {
         case .performed(let event):
             Self.log.debug("performed \(event.rawValue, privacy: .public)")
+        case .contextChanged(let context):
+            Self.log.debug("game context \(context.gameCode ?? "none", privacy: .public) \(context.phase ?? "-", privacy: .public)")
         case .ignoredDuplicate:
             break // Expected and frequent; not worth a line.
         case .ignoredUnsupportedVersion(let version):
@@ -90,8 +110,10 @@ final class GameBridge: NSObject, WKScriptMessageHandler {
         switch type {
         case "haptic":
             return routeHaptic(envelope["payload"])
-        case "gameContext", "lifecycle":
-            // Reserved by the contract; nothing consumes them yet.
+        case "gameContext":
+            return routeGameContext(envelope["payload"])
+        case "lifecycle":
+            // Reserved by the contract; nothing consumes it yet.
             return .ignoredUnknownType(type)
         default:
             return .ignoredUnknownType(type)
@@ -109,6 +131,21 @@ final class GameBridge: NSObject, WKScriptMessageHandler {
 
         haptics.perform(event)
         return .performed(event)
+    }
+
+    private func routeGameContext(_ payload: Any?) -> Outcome {
+        guard let payload = payload as? [String: Any] else { return .ignoredMalformed }
+
+        // Every field is optional: leaving a game reports nothing but nils.
+        let context = GameContext(
+            gameCode: (payload["gameCode"] as? String)?.uppercased(),
+            phase: payload["phase"] as? String,
+            playerId: payload["playerId"] as? String,
+            playerName: payload["playerName"] as? String,
+            hostName: payload["hostName"] as? String
+        )
+        onGameContext?(context)
+        return .contextChanged(context)
     }
 
     private func remember(_ id: String) {
