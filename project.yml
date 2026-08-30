@@ -3,18 +3,12 @@ options:
   bundleIdPrefix: net.steinbok.jeffopolydeal
   deploymentTarget:
     iOS: "17.0"
-packages:
-  SignalRClient:
-    url: https://github.com/moozzyk/SignalR-Client-Swift.git
-    from: 0.9.0
 targets:
   JeffopolyDeal:
     type: application
     platform: iOS
     sources:
       - JeffopolyDeal
-    dependencies:
-      - package: SignalRClient
     info:
       path: JeffopolyDeal/Info.plist
       properties:
@@ -30,12 +24,6 @@ targets:
           - UIInterfaceOrientationPortraitUpsideDown
           - UIInterfaceOrientationLandscapeLeft
           - UIInterfaceOrientationLandscapeRight
-        UIAppFonts:
-          - Inter-Regular.ttf
-          - Inter-SemiBold.ttf
-          - Inter-Bold.ttf
-          - Inter-ExtraBold.ttf
-          - Inter-Black.ttf
         NSAppTransportSecurity:
           NSExceptionDomains:
             localhost:
@@ -50,6 +38,7 @@ targets:
     settings:
       base:
         PRODUCT_BUNDLE_IDENTIFIER: net.steinbok.jeffopolydeal
+        CODE_SIGN_ENTITLEMENTS: JeffopolyDeal/JeffopolyDeal.entitlements
         CODE_SIGN_STYLE: Automatic
         DEVELOPMENT_TEAM: Y7KVX7666P
         SWIFT_VERSION: "5.0"

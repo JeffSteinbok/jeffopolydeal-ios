@@ -20,6 +20,15 @@ open JeffopolyDeal.xcodeproj
 
 The project is configured for automatic signing with the app's Apple development team. Select another team in Xcode if needed before running on a physical device.
 
+## Turn notifications
+
+The app requests notification permission on launch, registers its APNs token after joining or rejoining a game, and displays an in-app banner with sound and haptic feedback when its turn begins. Background and locked-device alerts require:
+
+- Push Notifications enabled for `net.steinbok.jeffopolydeal` in Apple Developer.
+- A provisioning profile containing the push entitlement.
+- The backend APNs settings documented in the main repository.
+- A physical device for end-to-end APNs testing. The simulator supports the foreground experience and simulated push payloads, but not production token delivery.
+
 ## Server configuration
 
 The app connects to `https://jeffopolydeal.azurewebsites.net` by default. To use a local or alternate server, change `JEFFOPOLYDEAL_BASE_URL` in `project.yml`, then regenerate the Xcode project. A physical device cannot reach a server through `localhost`; use your Mac's LAN address or a trusted HTTPS development endpoint.
@@ -50,20 +59,33 @@ Browser          WKWebView
        haptics / push / lifecycle
 ```
 
-- **SwiftUI** owns app entry, session identity, and the native capabilities
-  below — not gameplay rendering or gameplay state.
-- **`GameWebHostView`** presents the React client and owns the loading, error,
-  offline, and retry chrome around it.
-- **Multipeer Connectivity** advertises public game codes for nearby discovery.
-- The backend, browser client, shared game engine, and bot AI remain in the
-  [Jeffopoly Deal repository](https://github.com/JeffSteinbok/jeffopolydeal).
+There is one implementation of the game, and it is not here. The React client
+owns the whole player experience — start page, lobby, gameplay, and the SignalR
+connection. This app is the shell around it.
 
-### Gameplay entry contract
+**Swift owns** what the web cannot do for itself:
 
-The shell enters gameplay by loading `{base}/play` with the player's identity in
-the query string. `JeffopolyDeal/Web/GameWebURL.swift` builds it and
-`src/web/utilities/NativeHost.ts` in the main repository parses it; the two must
-stay in sync.
+- **`GameWebHostView`** — the window, and the loading, offline, error, and retry
+  chrome around the client.
+- **Multipeer Connectivity** — discovering games on the local network. The client
+  reports which game it is in, the shell advertises or browses accordingly, and
+  discovered games are pushed back into the client's start page.
+- **Push notifications** — permission, the APNs token, and notification taps. The
+  token is handed to the client, which registers it over its own hub connection.
+- **Session memory** — only enough to route a notification tap back to a game.
+
+**Swift does not own** gameplay rendering, gameplay state, mirrored DTOs, or a
+second SignalR connection. The backend, browser client, shared game engine, and
+bot AI all remain in the
+[Jeffopoly Deal repository](https://github.com/JeffSteinbok/jeffopolydeal).
+
+### Entry contract
+
+The shell opens the client at the site root with the device name as a hint for
+the name field. It can also enter one game directly at `{base}/play` — used by a
+shared link or a notification tap. `JeffopolyDeal/Web/GameWebURL.swift` builds
+these and `src/web/utilities/NativeHost.ts` in the main repository parses them;
+the two must stay in sync.
 
 | Parameter | Meaning |
 | --- | --- |
@@ -75,16 +97,21 @@ stay in sync.
 | `new` | `1` to ask the server for a new game instead of supplying `game`. |
 | `rejoin` | `1` to attempt `RejoinGame` rather than `JoinGame`. |
 
-Two conventions carry information back without a second gameplay state store in
-Swift:
+### Bridge
 
-- After a create, the client rewrites its own URL with the code the server
-  assigned. The shell observes the web view's URL and persists the session.
-- To leave a game, the client navigates to the site root. The shell cancels that
-  navigation and returns to `StartView`.
+Everything else crosses a small semantic bridge, documented in
+`JeffopolyDeal/Web/GameBridge.swift` and `src/web/utilities/NativeBridge.ts`.
 
-Navigation is otherwise pinned to `/play`: any other link opens in the system
-browser rather than replacing the game.
+Outbound (client to shell) messages are `haptic` — one of seven semantic game
+moments, mapped to feedback in `HapticEngine.swift` — and `gameContext`, which
+reports the current game and phase so the shell knows whether to advertise a
+lobby or browse for one.
+
+Inbound (shell to client) calls arrive on `window.jeffopolyNative`:
+`setNearbyGames`, `setPushToken`, `setLifecycle`, and `openGame`.
+
+The client owns navigation within our own origin, including the start page. Any
+link that leaves it opens in the system browser rather than replacing the game.
 
 ## TestFlight automation
 
