@@ -99,4 +99,28 @@ final class GameWebURLTests: XCTestCase {
         let url = URL(string: "javascript://jeffopolydeal.example.com/play")!
         XCTAssertFalse(GameWebURL.isSameOrigin(url, baseURL: base))
     }
+
+    // MARK: - Shared invite links
+
+    func testReadsTheCodeFromASharedInvite() {
+        let url = URL(string: "https://jeffopolydeal.example.com/?join=abcd")!
+        XCTAssertEqual(GameWebURL.sharedGameCode(in: url, baseURL: base), "ABCD")
+    }
+
+    func testIgnoresAnInviteFromAnotherSite() {
+        let url = URL(string: "https://evil.example.com/?join=ABCD")!
+        XCTAssertNil(GameWebURL.sharedGameCode(in: url, baseURL: base))
+    }
+
+    func testIgnoresALinkWithNoUsableCode() {
+        for candidate in [
+            "https://jeffopolydeal.example.com/",
+            "https://jeffopolydeal.example.com/?join=",
+            "https://jeffopolydeal.example.com/?join=AB",
+            "https://jeffopolydeal.example.com/?join=AB!D",
+            "https://jeffopolydeal.example.com/?game=ABCD",
+        ] {
+            XCTAssertNil(GameWebURL.sharedGameCode(in: URL(string: candidate)!, baseURL: base), candidate)
+        }
+    }
 }

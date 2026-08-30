@@ -78,6 +78,20 @@ enum GameWebURL {
         return host == baseHost && ["http", "https"].contains(scheme)
     }
 
+    /// The game code in a shared invite link, e.g. https://host/?join=ABCD.
+    /// Returns nil for a link to somewhere else, or to another site entirely.
+    static func sharedGameCode(in url: URL, baseURL: URL = AppConfiguration.baseURL) -> String? {
+        guard
+            isSameOrigin(url, baseURL: baseURL),
+            let items = URLComponents(url: url, resolvingAgainstBaseURL: false)?.queryItems,
+            let code = items.first(where: { $0.name.lowercased() == "join" })?.value?
+                .trimmingCharacters(in: .whitespacesAndNewlines).uppercased(),
+            code.count == 4,
+            code.allSatisfy({ $0.isLetter || $0.isNumber })
+        else { return nil }
+        return code
+    }
+
     private static func normalizedPath(_ url: URL) -> String {
         var path = url.path()
         while path.count > 1, path.hasSuffix("/") {

@@ -57,9 +57,18 @@ struct GameWebView: UIViewRepresentable {
     let reloadToken: Int
     /// Games found on the local network, pushed into the client's start page.
     let nearbyGames: [NearbyGamesService.NearbyGame]
+    /// APNs token, which only the shell can hold. The client registers it.
+    let pushToken: String?
+    /// Bumped when the app returns to the foreground, so the client can check a
+    /// connection that iOS may have frozen or killed while suspended.
+    let foregroundToken: Int
+    /// A game a notification tap asked for, if any.
+    let requestedGameCode: String?
     let onLoadingChanged: (Bool) -> Void
     let onFailure: (GameWebLoadFailure) -> Void
     let onGameContext: (GameBridge.GameContext) -> Void
+    /// Called once a requested game has been handed to the client.
+    let onRequestedGameHandled: () -> Void
 
     func makeCoordinator() -> Coordinator { Coordinator(self) }
 
@@ -96,7 +105,7 @@ struct GameWebView: UIViewRepresentable {
     func updateUIView(_ webView: WKWebView, context: Context) {
         context.coordinator.parent = self
         context.coordinator.loadIfNeeded(entryURL, token: reloadToken, in: webView)
-        context.coordinator.pushNearbyGames(nearbyGames, in: webView)
+        context.coordinator.pushInboundState(in: webView)
     }
 
     static func dismantleUIView(_ webView: WKWebView, coordinator: Coordinator) {
@@ -117,6 +126,9 @@ struct GameWebView: UIViewRepresentable {
         private var loaded: (url: URL, token: Int)?
         private var isPageLoaded = false
         private var pushedNearbyGames: String?
+        private var pushedPushToken: String?
+        private var pushedForegroundToken: Int?
+        private var pushedGameCode: String?
 
         init(_ parent: GameWebView) {
             self.parent = parent
@@ -149,26 +161,67 @@ struct GameWebView: UIViewRepresentable {
             Self.log.debug("loading \(url.absoluteString, privacy: .public)")
             loaded = (url, token)
             isPageLoaded = false
-            pushedNearbyGames = nil
+            resetPushedState()
             parent.onLoadingChanged(true)
             webView.load(URLRequest(url: url))
         }
 
-        // MARK: - Nearby games
+        /// A fresh page knows none of what we told the last one.
+        private func resetPushedState() {
+            pushedNearbyGames = nil
+            pushedPushToken = nil
+            pushedForegroundToken = nil
+            pushedGameCode = nil
+        }
 
-        /// Hands the client what Multipeer found. Local-network discovery has no
-        /// web equivalent, so this is the one thing the shell pushes inward.
-        func pushNearbyGames(_ games: [NearbyGamesService.NearbyGame], in webView: WKWebView) {
+        // MARK: - Inbound state
+
+        /// Hands the client everything only the shell can know. Each value is
+        /// sent once per change, so a re-render never replays a notification tap
+        /// or re-registers a token that has not moved.
+        func pushInboundState(in webView: WKWebView) {
             guard isPageLoaded else { return }
 
-            let payload = games.map { ["gameCode": $0.gameCode, "hostName": $0.hostName] }
-            guard let data = try? JSONSerialization.data(withJSONObject: payload),
-                  let json = String(data: data, encoding: .utf8),
-                  json != pushedNearbyGames
-            else { return }
+            if let json = encode(parent.nearbyGames), json != pushedNearbyGames {
+                pushedNearbyGames = json
+                call("setNearbyGames(\(json))", in: webView)
+            }
 
-            pushedNearbyGames = json
-            webView.evaluateJavaScript("window.jeffopolyNative?.setNearbyGames(\(json))")
+            if let token = parent.pushToken, token != pushedPushToken {
+                pushedPushToken = token
+                call("setPushToken(\(quoted(token)))", in: webView)
+            }
+
+            if parent.foregroundToken != pushedForegroundToken {
+                let isFirst = pushedForegroundToken == nil
+                pushedForegroundToken = parent.foregroundToken
+                // The first value is just the launch state, not a return.
+                if !isFirst { call("setLifecycle(\"active\")", in: webView) }
+            }
+
+            if let code = parent.requestedGameCode, code != pushedGameCode {
+                pushedGameCode = code
+                call("openGame(\(quoted(code)))", in: webView)
+                parent.onRequestedGameHandled()
+            }
+        }
+
+        private func encode(_ games: [NearbyGamesService.NearbyGame]) -> String? {
+            let payload = games.map { ["gameCode": $0.gameCode, "hostName": $0.hostName] }
+            guard let data = try? JSONSerialization.data(withJSONObject: payload) else { return nil }
+            return String(data: data, encoding: .utf8)
+        }
+
+        /// JSON-encodes a string so a stray quote cannot break out of the call.
+        private func quoted(_ value: String) -> String {
+            guard let data = try? JSONSerialization.data(withJSONObject: [value]),
+                  let json = String(data: data, encoding: .utf8)
+            else { return "\"\"" }
+            return String(json.dropFirst().dropLast())
+        }
+
+        private func call(_ expression: String, in webView: WKWebView) {
+            webView.evaluateJavaScript("window.jeffopolyNative?.\(expression)")
         }
 
         // MARK: - Navigation policy
@@ -226,9 +279,8 @@ struct GameWebView: UIViewRepresentable {
         func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
             isPageLoaded = true
             parent.onLoadingChanged(false)
-            // A fresh page has no nearby games until we hand them over again.
-            pushedNearbyGames = nil
-            pushNearbyGames(parent.nearbyGames, in: webView)
+            resetPushedState()
+            pushInboundState(in: webView)
         }
 
         func webView(_ webView: WKWebView, didFail navigation: WKNavigation!, withError error: Error) {
