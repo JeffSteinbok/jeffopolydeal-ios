@@ -13,6 +13,7 @@
 		145E0DCE7189A0679351EAB3 /* HapticEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE1F4251040BC05A555C018F /* HapticEngine.swift */; };
 		271519AC6F95C5A7481151E0 /* PushNotificationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1810C42C284626B2850FF7F /* PushNotificationManager.swift */; };
 		33904979A5E3EFFFAFCC4AF2 /* NearbyGamesService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 329167334E9ECB42B328CC76 /* NearbyGamesService.swift */; };
+		756FB736CAF2D3E2FC8B5258 /* GameWebViewContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 263A6DF1E63D1567AD8C8E3C /* GameWebViewContainer.swift */; };
 		9A906C00C2596B5BE7E3D2A7 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5C2D85050D7E5B540ED916C8 /* Assets.xcassets */; };
 		A3BFE07C0CB1A8F4A139AC33 /* GameWebURLTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B139B07E007F28C1F20743F0 /* GameWebURLTests.swift */; };
 		AB60411657885FF34B7BB85D /* DeviceName.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E30811A7F4B7A3B9B4979EA /* DeviceName.swift */; };
@@ -38,6 +39,7 @@
 /* Begin PBXFileReference section */
 		001B346A829E78D3E09B23EF /* AppConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppConfiguration.swift; sourceTree = "<group>"; };
 		1CACD58815BEB8C201841D60 /* GameWebURL.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameWebURL.swift; sourceTree = "<group>"; };
+		263A6DF1E63D1567AD8C8E3C /* GameWebViewContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameWebViewContainer.swift; sourceTree = "<group>"; };
 		26D2CF3DAA2D1364BE0DBDB3 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		329167334E9ECB42B328CC76 /* NearbyGamesService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NearbyGamesService.swift; sourceTree = "<group>"; };
 		3AF222ACC7086F6DC8D69A88 /* GameWebHostView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameWebHostView.swift; sourceTree = "<group>"; };
@@ -109,6 +111,7 @@
 				3AF222ACC7086F6DC8D69A88 /* GameWebHostView.swift */,
 				1CACD58815BEB8C201841D60 /* GameWebURL.swift */,
 				F200CE35EFE0F6AB5E406256 /* GameWebView.swift */,
+				263A6DF1E63D1567AD8C8E3C /* GameWebViewContainer.swift */,
 				FE1F4251040BC05A555C018F /* HapticEngine.swift */,
 			);
 			path = Web;
@@ -234,6 +237,7 @@
 				02359F3F8463930261805B24 /* GameWebHostView.swift in Sources */,
 				EB74F40CFA1FF30BCC929BA2 /* GameWebURL.swift in Sources */,
 				0D016A40428BB052F5FFC36F /* GameWebView.swift in Sources */,
+				756FB736CAF2D3E2FC8B5258 /* GameWebViewContainer.swift in Sources */,
 				145E0DCE7189A0679351EAB3 /* HapticEngine.swift in Sources */,
 				D600FB609644A76E11EA1E07 /* JeffopolyDealApp.swift in Sources */,
 				33904979A5E3EFFFAFCC4AF2 /* NearbyGamesService.swift in Sources */,
@@ -347,6 +351,7 @@
 		B615321FE8196765BA1A4D05 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				APS_ENVIRONMENT = production;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = JeffopolyDeal/JeffopolyDeal.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
@@ -390,6 +395,7 @@
 		D27398C7029F1D2E2BF0B4F2 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				APS_ENVIRONMENT = development;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = JeffopolyDeal/JeffopolyDeal.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";

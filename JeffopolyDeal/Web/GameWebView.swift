@@ -84,7 +84,7 @@ struct GameWebView: UIViewRepresentable {
             name: GameBridge.handlerName
         )
 
-        let webView = WKWebView(frame: .zero, configuration: configuration)
+        let webView = KeyboardAccessoryFreeWebView(frame: .zero, configuration: configuration)
         // Distinguishes app traffic from browser and PWA traffic in server-side
         // telemetry, which otherwise cannot tell them apart now that both reach
         // the hub through the same JavaScript client.
