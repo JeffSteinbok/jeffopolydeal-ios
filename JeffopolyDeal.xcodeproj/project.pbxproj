@@ -7,128 +7,80 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		022B5AEBAF4DC49D185D8C61 /* CardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E52ECA1421FC34A58F4E278F /* CardView.swift */; };
-		07206F0992D3F8ED0019BCEF /* GameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5029BAB55EBB1FC7299CE469 /* GameView.swift */; };
-		0E7B78D661D0B28668F7185D /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EF9BB387E5C0B9E4434D2EC4 /* ContentView.swift */; };
-		17852A0300E34F4883A3D771 /* DiscardSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = DE5BB582113FDF185F085A70 /* DiscardSheet.swift */; };
-		1A9059E5C4D458379CA13B37 /* GameHubClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = C25629EED88C66ACE974AED9 /* GameHubClient.swift */; };
-		213A1FEF91F8424828C24A77 /* CardModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C5120FDCFF45F68897CD3A9 /* CardModel.swift */; };
-		234093BED799A18D790E5AFD /* PlayCardSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6DE677FC84B700A30B0D354 /* PlayCardSheet.swift */; };
-		2F276D0550F519DF5AC2B1B4 /* HandView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B50A0B1C024AA3D9B1464EDB /* HandView.swift */; };
+		02359F3F8463930261805B24 /* GameWebHostView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3AF222ACC7086F6DC8D69A88 /* GameWebHostView.swift */; };
+		08110CBA53ADB0AE00C81B30 /* GameBridgeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B0602A8E6FA635670AFD89A3 /* GameBridgeTests.swift */; };
+		0D016A40428BB052F5FFC36F /* GameWebView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F200CE35EFE0F6AB5E406256 /* GameWebView.swift */; };
+		145E0DCE7189A0679351EAB3 /* HapticEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = FE1F4251040BC05A555C018F /* HapticEngine.swift */; };
+		271519AC6F95C5A7481151E0 /* PushNotificationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F1810C42C284626B2850FF7F /* PushNotificationManager.swift */; };
 		33904979A5E3EFFFAFCC4AF2 /* NearbyGamesService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 329167334E9ECB42B328CC76 /* NearbyGamesService.swift */; };
-		33922081F3368F245F6A562A /* Inter-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = DA2423DBCFDE6CC8D0D09037 /* Inter-Bold.ttf */; };
-		34CF23A233525DA60DCB56A9 /* RentIcon.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16DA80D1706718BC435F0F6F /* RentIcon.swift */; };
-		386D2F99B9A6C0359D7C5CB3 /* ActionResponseSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0BE72948B1144334117E19FD /* ActionResponseSheet.swift */; };
-		4201319FEAAD397159C5365B /* GameConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C74A6B3971B4529E0F796E9 /* GameConfig.swift */; };
-		5951D93E7B76A5A7A4C4EC17 /* GameState.swift in Sources */ = {isa = PBXBuildFile; fileRef = E59ECC8F639E18D1E871726E /* GameState.swift */; };
-		676773334BA74B8ED1141E44 /* ToastCenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 98B79D9974C5D91A7E0A61CB /* ToastCenter.swift */; };
-		90E773F3D38AD79372814963 /* Inter-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A35084CBE59DCCC7F56D84A4 /* Inter-Regular.ttf */; };
+		756FB736CAF2D3E2FC8B5258 /* GameWebViewContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 263A6DF1E63D1567AD8C8E3C /* GameWebViewContainer.swift */; };
 		9A906C00C2596B5BE7E3D2A7 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5C2D85050D7E5B540ED916C8 /* Assets.xcassets */; };
-		9B8F697A4007D68E66FEFCF3 /* Inter-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 0468683AFDFCA1B3B78B4112 /* Inter-SemiBold.ttf */; };
-		9BFE3030449A51487BD124B0 /* PropertyColors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 317A4E502E7908E7ADF95B24 /* PropertyColors.swift */; };
+		A3BFE07C0CB1A8F4A139AC33 /* GameWebURLTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B139B07E007F28C1F20743F0 /* GameWebURLTests.swift */; };
 		AB60411657885FF34B7BB85D /* DeviceName.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E30811A7F4B7A3B9B4979EA /* DeviceName.swift */; };
-		B5EF7761C4F21EC9776CFA8D /* StartView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD41328686EF5161A9096B83 /* StartView.swift */; };
 		B6B49E6B24D5813469D64E0E /* AppRootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED553198986784A92FFC8689 /* AppRootView.swift */; };
-		B7B74DF24F1F901EE58F8DB7 /* InterFont.swift in Sources */ = {isa = PBXBuildFile; fileRef = 06E1E09CAFA984026AB73880 /* InterFont.swift */; };
-		B9BDD767C00AD5C274D670E1 /* SignalRClient in Frameworks */ = {isa = PBXBuildFile; productRef = 09DD40C8A9BF8574E7BDBFE5 /* SignalRClient */; };
-		C60BC7931C47EA7A424F0594 /* Inter-ExtraBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 39492BE415F85B2CD1CF32D1 /* Inter-ExtraBold.ttf */; };
-		C60D8432648BB2E735F02A8B /* BoardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4D51FBB97CD7A601D58ACDE7 /* BoardView.swift */; };
+		CB101848EF43C6EFC7A8BBE6 /* GameBridge.swift in Sources */ = {isa = PBXBuildFile; fileRef = D6B8EB308E96CACC126763C7 /* GameBridge.swift */; };
 		D50A5785527D2748ECC2B566 /* AppConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 001B346A829E78D3E09B23EF /* AppConfiguration.swift */; };
 		D600FB609644A76E11EA1E07 /* JeffopolyDealApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA4684735EFC1B6BD1745648 /* JeffopolyDealApp.swift */; };
-		D755C20B9E1BADB0283D2AA6 /* SVGPath.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F7FFC1123CD4F8F19535B26 /* SVGPath.swift */; };
-		E085845C524941A3A67A823F /* Inter-Black.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 3A0AAB6C882AC7DF6F93E3FD /* Inter-Black.ttf */; };
-		E5066A090C73C4D9306CA458 /* PlayerBoardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22E249D8BA84141111353903 /* PlayerBoardView.swift */; };
+		EB74F40CFA1FF30BCC929BA2 /* GameWebURL.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1CACD58815BEB8C201841D60 /* GameWebURL.swift */; };
 		EE38895599F13A8C06E6CFAE /* AppBackground.swift in Sources */ = {isa = PBXBuildFile; fileRef = FEC8CFB2B5603A191202D52E /* AppBackground.swift */; };
 		FD0904A15DA222B534E32383 /* SessionStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = BFC018F1B55911027CE6C76E /* SessionStore.swift */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXContainerItemProxy section */
+		CF41F847D8CED2F30BB82495 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = D822633863A9F44060E51EA8 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = F0453A27849E62499BF3C861;
+			remoteInfo = JeffopolyDeal;
+		};
+/* End PBXContainerItemProxy section */
+
 /* Begin PBXFileReference section */
 		001B346A829E78D3E09B23EF /* AppConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppConfiguration.swift; sourceTree = "<group>"; };
-		0468683AFDFCA1B3B78B4112 /* Inter-SemiBold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Inter-SemiBold.ttf"; sourceTree = "<group>"; };
-		06E1E09CAFA984026AB73880 /* InterFont.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InterFont.swift; sourceTree = "<group>"; };
-		0BE72948B1144334117E19FD /* ActionResponseSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActionResponseSheet.swift; sourceTree = "<group>"; };
-		0C5120FDCFF45F68897CD3A9 /* CardModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardModel.swift; sourceTree = "<group>"; };
-		0C74A6B3971B4529E0F796E9 /* GameConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameConfig.swift; sourceTree = "<group>"; };
-		16DA80D1706718BC435F0F6F /* RentIcon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RentIcon.swift; sourceTree = "<group>"; };
-		22E249D8BA84141111353903 /* PlayerBoardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerBoardView.swift; sourceTree = "<group>"; };
+		1CACD58815BEB8C201841D60 /* GameWebURL.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameWebURL.swift; sourceTree = "<group>"; };
+		263A6DF1E63D1567AD8C8E3C /* GameWebViewContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameWebViewContainer.swift; sourceTree = "<group>"; };
 		26D2CF3DAA2D1364BE0DBDB3 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
-		317A4E502E7908E7ADF95B24 /* PropertyColors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PropertyColors.swift; sourceTree = "<group>"; };
 		329167334E9ECB42B328CC76 /* NearbyGamesService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NearbyGamesService.swift; sourceTree = "<group>"; };
-		39492BE415F85B2CD1CF32D1 /* Inter-ExtraBold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Inter-ExtraBold.ttf"; sourceTree = "<group>"; };
-		3A0AAB6C882AC7DF6F93E3FD /* Inter-Black.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Inter-Black.ttf"; sourceTree = "<group>"; };
-		4D51FBB97CD7A601D58ACDE7 /* BoardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoardView.swift; sourceTree = "<group>"; };
-		5029BAB55EBB1FC7299CE469 /* GameView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameView.swift; sourceTree = "<group>"; };
+		3AF222ACC7086F6DC8D69A88 /* GameWebHostView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameWebHostView.swift; sourceTree = "<group>"; };
 		5C2D85050D7E5B540ED916C8 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		5E30811A7F4B7A3B9B4979EA /* DeviceName.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeviceName.swift; sourceTree = "<group>"; };
-		98B79D9974C5D91A7E0A61CB /* ToastCenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToastCenter.swift; sourceTree = "<group>"; };
-		9F7FFC1123CD4F8F19535B26 /* SVGPath.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SVGPath.swift; sourceTree = "<group>"; };
 		A055F2A2DE8181C26D32201B /* JeffopolyDeal.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = JeffopolyDeal.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		A35084CBE59DCCC7F56D84A4 /* Inter-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Inter-Regular.ttf"; sourceTree = "<group>"; };
-		B50A0B1C024AA3D9B1464EDB /* HandView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HandView.swift; sourceTree = "<group>"; };
+		B0602A8E6FA635670AFD89A3 /* GameBridgeTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameBridgeTests.swift; sourceTree = "<group>"; };
+		B139B07E007F28C1F20743F0 /* GameWebURLTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameWebURLTests.swift; sourceTree = "<group>"; };
 		BA4684735EFC1B6BD1745648 /* JeffopolyDealApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JeffopolyDealApp.swift; sourceTree = "<group>"; };
 		BFC018F1B55911027CE6C76E /* SessionStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SessionStore.swift; sourceTree = "<group>"; };
-		C25629EED88C66ACE974AED9 /* GameHubClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameHubClient.swift; sourceTree = "<group>"; };
-		CD41328686EF5161A9096B83 /* StartView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StartView.swift; sourceTree = "<group>"; };
-		D6DE677FC84B700A30B0D354 /* PlayCardSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayCardSheet.swift; sourceTree = "<group>"; };
-		DA2423DBCFDE6CC8D0D09037 /* Inter-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Inter-Bold.ttf"; sourceTree = "<group>"; };
-		DE5BB582113FDF185F085A70 /* DiscardSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiscardSheet.swift; sourceTree = "<group>"; };
-		E52ECA1421FC34A58F4E278F /* CardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardView.swift; sourceTree = "<group>"; };
-		E59ECC8F639E18D1E871726E /* GameState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameState.swift; sourceTree = "<group>"; };
+		C4ACB345BA81D272D742FF23 /* JeffopolyDeal.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = JeffopolyDeal.entitlements; sourceTree = "<group>"; };
+		D6B8EB308E96CACC126763C7 /* GameBridge.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameBridge.swift; sourceTree = "<group>"; };
+		E442B60F6436D9517B95450F /* JeffopolyDealTests.xctest */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = JeffopolyDealTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		ED553198986784A92FFC8689 /* AppRootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppRootView.swift; sourceTree = "<group>"; };
-		EF9BB387E5C0B9E4434D2EC4 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		F1810C42C284626B2850FF7F /* PushNotificationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PushNotificationManager.swift; sourceTree = "<group>"; };
+		F200CE35EFE0F6AB5E406256 /* GameWebView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameWebView.swift; sourceTree = "<group>"; };
+		FE1F4251040BC05A555C018F /* HapticEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HapticEngine.swift; sourceTree = "<group>"; };
 		FEC8CFB2B5603A191202D52E /* AppBackground.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppBackground.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
-/* Begin PBXFrameworksBuildPhase section */
-		F0865105209F871D5CF1AAAC /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				B9BDD767C00AD5C274D670E1 /* SignalRClient in Frameworks */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-/* End PBXFrameworksBuildPhase section */
-
 /* Begin PBXGroup section */
-		141DB5139D61D415E0E7EEB7 /* Views */ = {
+		4AA93C0B11392B9CD7B0D144 /* Notifications */ = {
 			isa = PBXGroup;
 			children = (
-				E52ECA1421FC34A58F4E278F /* CardView.swift */,
-				06E1E09CAFA984026AB73880 /* InterFont.swift */,
-				16DA80D1706718BC435F0F6F /* RentIcon.swift */,
-				9F7FFC1123CD4F8F19535B26 /* SVGPath.swift */,
+				F1810C42C284626B2850FF7F /* PushNotificationManager.swift */,
 			);
-			path = Views;
+			path = Notifications;
 			sourceTree = "<group>";
 		};
-		27C7AE56D0FC66DB47EE393C /* Fonts */ = {
+		4BD7DB5BA00449FD4B6EE7FD /* Tests */ = {
 			isa = PBXGroup;
 			children = (
-				3A0AAB6C882AC7DF6F93E3FD /* Inter-Black.ttf */,
-				DA2423DBCFDE6CC8D0D09037 /* Inter-Bold.ttf */,
-				39492BE415F85B2CD1CF32D1 /* Inter-ExtraBold.ttf */,
-				A35084CBE59DCCC7F56D84A4 /* Inter-Regular.ttf */,
-				0468683AFDFCA1B3B78B4112 /* Inter-SemiBold.ttf */,
+				B0602A8E6FA635670AFD89A3 /* GameBridgeTests.swift */,
+				B139B07E007F28C1F20743F0 /* GameWebURLTests.swift */,
 			);
-			path = Fonts;
-			sourceTree = "<group>";
-		};
-		3F4A76785CCAD14B39072C4C /* Models */ = {
-			isa = PBXGroup;
-			children = (
-				0C5120FDCFF45F68897CD3A9 /* CardModel.swift */,
-				0C74A6B3971B4529E0F796E9 /* GameConfig.swift */,
-				E59ECC8F639E18D1E871726E /* GameState.swift */,
-				317A4E502E7908E7ADF95B24 /* PropertyColors.swift */,
-			);
-			path = Models;
+			path = Tests;
 			sourceTree = "<group>";
 		};
 		4C7D96EAF963EDF0B205884C /* Networking */ = {
 			isa = PBXGroup;
 			children = (
-				C25629EED88C66ACE974AED9 /* GameHubClient.swift */,
 				BFC018F1B55911027CE6C76E /* SessionStore.swift */,
 			);
 			path = Networking;
@@ -138,6 +90,7 @@
 			isa = PBXGroup;
 			children = (
 				D3E2841A67EA38458965F2AB /* JeffopolyDeal */,
+				4BD7DB5BA00449FD4B6EE7FD /* Tests */,
 				D2F32BD4EE78BC02161A984D /* Products */,
 			);
 			sourceTree = "<group>";
@@ -146,35 +99,39 @@
 			isa = PBXGroup;
 			children = (
 				A055F2A2DE8181C26D32201B /* JeffopolyDeal.app */,
+				E442B60F6436D9517B95450F /* JeffopolyDealTests.xctest */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		D3D051DCBB3EC0874BD6C709 /* Web */ = {
+			isa = PBXGroup;
+			children = (
+				D6B8EB308E96CACC126763C7 /* GameBridge.swift */,
+				3AF222ACC7086F6DC8D69A88 /* GameWebHostView.swift */,
+				1CACD58815BEB8C201841D60 /* GameWebURL.swift */,
+				F200CE35EFE0F6AB5E406256 /* GameWebView.swift */,
+				263A6DF1E63D1567AD8C8E3C /* GameWebViewContainer.swift */,
+				FE1F4251040BC05A555C018F /* HapticEngine.swift */,
+			);
+			path = Web;
 			sourceTree = "<group>";
 		};
 		D3E2841A67EA38458965F2AB /* JeffopolyDeal */ = {
 			isa = PBXGroup;
 			children = (
-				0BE72948B1144334117E19FD /* ActionResponseSheet.swift */,
 				FEC8CFB2B5603A191202D52E /* AppBackground.swift */,
 				001B346A829E78D3E09B23EF /* AppConfiguration.swift */,
 				ED553198986784A92FFC8689 /* AppRootView.swift */,
 				5C2D85050D7E5B540ED916C8 /* Assets.xcassets */,
-				4D51FBB97CD7A601D58ACDE7 /* BoardView.swift */,
-				EF9BB387E5C0B9E4434D2EC4 /* ContentView.swift */,
 				5E30811A7F4B7A3B9B4979EA /* DeviceName.swift */,
-				DE5BB582113FDF185F085A70 /* DiscardSheet.swift */,
-				5029BAB55EBB1FC7299CE469 /* GameView.swift */,
-				B50A0B1C024AA3D9B1464EDB /* HandView.swift */,
 				26D2CF3DAA2D1364BE0DBDB3 /* Info.plist */,
+				C4ACB345BA81D272D742FF23 /* JeffopolyDeal.entitlements */,
 				BA4684735EFC1B6BD1745648 /* JeffopolyDealApp.swift */,
 				329167334E9ECB42B328CC76 /* NearbyGamesService.swift */,
-				D6DE677FC84B700A30B0D354 /* PlayCardSheet.swift */,
-				22E249D8BA84141111353903 /* PlayerBoardView.swift */,
-				CD41328686EF5161A9096B83 /* StartView.swift */,
-				98B79D9974C5D91A7E0A61CB /* ToastCenter.swift */,
-				27C7AE56D0FC66DB47EE393C /* Fonts */,
-				3F4A76785CCAD14B39072C4C /* Models */,
 				4C7D96EAF963EDF0B205884C /* Networking */,
-				141DB5139D61D415E0E7EEB7 /* Views */,
+				4AA93C0B11392B9CD7B0D144 /* Notifications */,
+				D3D051DCBB3EC0874BD6C709 /* Web */,
 			);
 			path = JeffopolyDeal;
 			sourceTree = "<group>";
@@ -182,13 +139,30 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		411B44EF219E4BAD0899FED4 /* JeffopolyDealTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = EF787004B2F3D746F669ADCD /* Build configuration list for PBXNativeTarget "JeffopolyDealTests" */;
+			buildPhases = (
+				C9CBF83AB84C96F12C68BFAC /* Sources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				7C296CC5AA79683A7EFD49BE /* PBXTargetDependency */,
+			);
+			name = JeffopolyDealTests;
+			packageProductDependencies = (
+			);
+			productName = JeffopolyDealTests;
+			productReference = E442B60F6436D9517B95450F /* JeffopolyDealTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 		F0453A27849E62499BF3C861 /* JeffopolyDeal */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 168C1807B9B8032DA27FED0D /* Build configuration list for PBXNativeTarget "JeffopolyDeal" */;
 			buildPhases = (
 				4B5C3C080B7BCE3C35D9C076 /* Sources */,
 				4A4A68BB4CF4245B7B64AB58 /* Resources */,
-				F0865105209F871D5CF1AAAC /* Frameworks */,
 			);
 			buildRules = (
 			);
@@ -196,7 +170,6 @@
 			);
 			name = JeffopolyDeal;
 			packageProductDependencies = (
-				09DD40C8A9BF8574E7BDBFE5 /* SignalRClient */,
 			);
 			productName = JeffopolyDeal;
 			productReference = A055F2A2DE8181C26D32201B /* JeffopolyDeal.app */;
@@ -211,6 +184,9 @@
 				BuildIndependentTargetsInParallel = YES;
 				LastUpgradeCheck = 1430;
 				TargetAttributes = {
+					411B44EF219E4BAD0899FED4 = {
+						DevelopmentTeam = Y7KVX7666P;
+					};
 					F0453A27849E62499BF3C861 = {
 						DevelopmentTeam = Y7KVX7666P;
 						ProvisioningStyle = Automatic;
@@ -226,15 +202,13 @@
 			);
 			mainGroup = 6981A78DAC173A3B4CCED135;
 			minimizedProjectReferenceProxies = 1;
-			packageReferences = (
-				F62AEFD99C0853629897BE81 /* XCRemoteSwiftPackageReference "SignalR-Client-Swift" */,
-			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = D2F32BD4EE78BC02161A984D /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
 				F0453A27849E62499BF3C861 /* JeffopolyDeal */,
+				411B44EF219E4BAD0899FED4 /* JeffopolyDealTests */,
 			);
 		};
 /* End PBXProject section */
@@ -245,11 +219,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				9A906C00C2596B5BE7E3D2A7 /* Assets.xcassets in Resources */,
-				E085845C524941A3A67A823F /* Inter-Black.ttf in Resources */,
-				33922081F3368F245F6A562A /* Inter-Bold.ttf in Resources */,
-				C60BC7931C47EA7A424F0594 /* Inter-ExtraBold.ttf in Resources */,
-				90E773F3D38AD79372814963 /* Inter-Regular.ttf in Resources */,
-				9B8F697A4007D68E66FEFCF3 /* Inter-SemiBold.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -260,38 +229,62 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				386D2F99B9A6C0359D7C5CB3 /* ActionResponseSheet.swift in Sources */,
 				EE38895599F13A8C06E6CFAE /* AppBackground.swift in Sources */,
 				D50A5785527D2748ECC2B566 /* AppConfiguration.swift in Sources */,
 				B6B49E6B24D5813469D64E0E /* AppRootView.swift in Sources */,
-				C60D8432648BB2E735F02A8B /* BoardView.swift in Sources */,
-				213A1FEF91F8424828C24A77 /* CardModel.swift in Sources */,
-				022B5AEBAF4DC49D185D8C61 /* CardView.swift in Sources */,
-				0E7B78D661D0B28668F7185D /* ContentView.swift in Sources */,
 				AB60411657885FF34B7BB85D /* DeviceName.swift in Sources */,
-				17852A0300E34F4883A3D771 /* DiscardSheet.swift in Sources */,
-				4201319FEAAD397159C5365B /* GameConfig.swift in Sources */,
-				1A9059E5C4D458379CA13B37 /* GameHubClient.swift in Sources */,
-				5951D93E7B76A5A7A4C4EC17 /* GameState.swift in Sources */,
-				07206F0992D3F8ED0019BCEF /* GameView.swift in Sources */,
-				2F276D0550F519DF5AC2B1B4 /* HandView.swift in Sources */,
-				B7B74DF24F1F901EE58F8DB7 /* InterFont.swift in Sources */,
+				CB101848EF43C6EFC7A8BBE6 /* GameBridge.swift in Sources */,
+				02359F3F8463930261805B24 /* GameWebHostView.swift in Sources */,
+				EB74F40CFA1FF30BCC929BA2 /* GameWebURL.swift in Sources */,
+				0D016A40428BB052F5FFC36F /* GameWebView.swift in Sources */,
+				756FB736CAF2D3E2FC8B5258 /* GameWebViewContainer.swift in Sources */,
+				145E0DCE7189A0679351EAB3 /* HapticEngine.swift in Sources */,
 				D600FB609644A76E11EA1E07 /* JeffopolyDealApp.swift in Sources */,
 				33904979A5E3EFFFAFCC4AF2 /* NearbyGamesService.swift in Sources */,
-				234093BED799A18D790E5AFD /* PlayCardSheet.swift in Sources */,
-				E5066A090C73C4D9306CA458 /* PlayerBoardView.swift in Sources */,
-				9BFE3030449A51487BD124B0 /* PropertyColors.swift in Sources */,
-				34CF23A233525DA60DCB56A9 /* RentIcon.swift in Sources */,
-				D755C20B9E1BADB0283D2AA6 /* SVGPath.swift in Sources */,
+				271519AC6F95C5A7481151E0 /* PushNotificationManager.swift in Sources */,
 				FD0904A15DA222B534E32383 /* SessionStore.swift in Sources */,
-				B5EF7761C4F21EC9776CFA8D /* StartView.swift in Sources */,
-				676773334BA74B8ED1141E44 /* ToastCenter.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		C9CBF83AB84C96F12C68BFAC /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				08110CBA53ADB0AE00C81B30 /* GameBridgeTests.swift in Sources */,
+				A3BFE07C0CB1A8F4A139AC33 /* GameWebURLTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
+/* Begin PBXTargetDependency section */
+		7C296CC5AA79683A7EFD49BE /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = F0453A27849E62499BF3C861 /* JeffopolyDeal */;
+			targetProxy = CF41F847D8CED2F30BB82495 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
 /* Begin XCBuildConfiguration section */
+		35D41809F7159167F8E17250 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				DEVELOPMENT_TEAM = Y7KVX7666P;
+				GENERATE_INFOPLIST_FILE = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = net.steinbok.jeffopolydeal.tests;
+				SDKROOT = iphoneos;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/JeffopolyDeal.app/JeffopolyDeal";
+			};
+			name = Debug;
+		};
 		56B5C35F27D461E88E0DF4EA /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -358,7 +351,9 @@
 		B615321FE8196765BA1A4D05 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				APS_ENVIRONMENT = production;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = JeffopolyDeal/JeffopolyDeal.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
@@ -378,10 +373,31 @@
 			};
 			name = Release;
 		};
+		C9ABD364159198A49CDA3FBB /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				DEVELOPMENT_TEAM = Y7KVX7666P;
+				GENERATE_INFOPLIST_FILE = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = net.steinbok.jeffopolydeal.tests;
+				SDKROOT = iphoneos;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/JeffopolyDeal.app/JeffopolyDeal";
+			};
+			name = Release;
+		};
 		D27398C7029F1D2E2BF0B4F2 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				APS_ENVIRONMENT = development;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = JeffopolyDeal/JeffopolyDeal.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
@@ -478,26 +494,16 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Debug;
 		};
+		EF787004B2F3D746F669ADCD /* Build configuration list for PBXNativeTarget "JeffopolyDealTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				35D41809F7159167F8E17250 /* Debug */,
+				C9ABD364159198A49CDA3FBB /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
 /* End XCConfigurationList section */
-
-/* Begin XCRemoteSwiftPackageReference section */
-		F62AEFD99C0853629897BE81 /* XCRemoteSwiftPackageReference "SignalR-Client-Swift" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/moozzyk/SignalR-Client-Swift.git";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 0.9.0;
-			};
-		};
-/* End XCRemoteSwiftPackageReference section */
-
-/* Begin XCSwiftPackageProductDependency section */
-		09DD40C8A9BF8574E7BDBFE5 /* SignalRClient */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = F62AEFD99C0853629897BE81 /* XCRemoteSwiftPackageReference "SignalR-Client-Swift" */;
-			productName = SignalRClient;
-		};
-/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = D822633863A9F44060E51EA8 /* Project object */;
 }

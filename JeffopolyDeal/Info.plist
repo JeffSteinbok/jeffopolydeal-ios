@@ -44,14 +44,6 @@
 	</array>
 	<key>NSLocalNetworkUsageDescription</key>
 	<string>Jeffopoly Deal uses your local network to find nearby games hosted by friends.</string>
-	<key>UIAppFonts</key>
-	<array>
-		<string>Inter-Regular.ttf</string>
-		<string>Inter-SemiBold.ttf</string>
-		<string>Inter-Bold.ttf</string>
-		<string>Inter-ExtraBold.ttf</string>
-		<string>Inter-Black.ttf</string>
-	</array>
 	<key>UILaunchScreen</key>
 	<dict/>
 	<key>UISupportedInterfaceOrientations</key>
