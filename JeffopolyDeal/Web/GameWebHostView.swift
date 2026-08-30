@@ -30,6 +30,7 @@ struct GameWebHostView: View {
                 reloadToken: reloadToken,
                 nearbyGames: nearby.nearbyGames,
                 pushToken: push.deviceToken,
+                pushDiagnostics: push.diagnostics,
                 foregroundToken: foregroundToken,
                 requestedGameCode: push.requestedGameCode,
                 onLoadingChanged: { loading in
